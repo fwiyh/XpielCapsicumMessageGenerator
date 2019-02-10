@@ -273,7 +273,7 @@ $(function(){
 				// TODO この辺の処理を綺麗にしたい
 				// 隣接が同数の場合は近い方に向かう
 				if (upperMessageLength == lowerMessageLength){
-					if (nextIndex == upperMessages[0].selectedIndex){
+					if (upperMessages.length > 0 && nextIndex == upperMessages[0].selectedIndex){
 						// 上
 						sortedArr = sortedArr.concat(getToUpper(tmpArr, beginSelectedIndex));
 						// 下
