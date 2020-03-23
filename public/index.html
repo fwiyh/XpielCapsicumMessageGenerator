@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>メモしてクリップボードに貼り付けるよー</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="./index.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div id="PositionContent"></div>
+		<div id="Message" class="row" style="height: 1.5rem;"></div>
+		<div class="row">
+			<button id="ClipBoard" class="btn-primary">クリップボードにコピー</button>
+		</div>
+		<!-- config -->
+		<div id="Config" style="display: none;">
+			<div class="form-group">
+				<label>リージョン～ロケーション区切り文字</label>
+				<input type="text" id="ConfigRegionLocationDelimiter" class="" value="" />
+			</div>
+			<div class="form-group">
+				<label>ロケーション区切り文字</label>
+				<input type="text" id="ConfigLocationDelimiter" class="" value="" />
+			</div>
+			<div class="form-group">
+				<label>ロケーション～チャンネル区切り文字</label>
+				<input type="text" id="ConfigLocationChannelDelimiter" class="" value="" />
+			</div>
+			<div class="form-group">
+				<label>チャンネル区切り文字</label>
+				<input type="text" id="ConfigChannelDelimiter" class="" value="" />
+			</div>
+			<div class="form-group">
+				<label>リージョン間区切り文字</label>
+				<input type="text" id="ConfigRegionJoinDelimiter" class="" value=" " />
+			</div>
+		</div>
+	</div>
+	<!-- skeleton -->
+	<div id="Region_-1" class="row" style="display: none;">
+		<div id="RegionName_-1" style="display: none;"></div>
+		<input type="hidden" id="RegionIndex_-1" style="display: none;">
+		<div id="Location_-1" class="btn-group-toggle col-xs-12 col-sm-12" data-toggle="buttons" style="display: none;">
+			<label id="LocName_-1"></label>
+			<input type="hidden" id="LocationIndex_-1" style="display: none;" />
+			<label id="Choice_-1_-1" class="btn btn-info" style="display: none;">
+				<input type="radio" id="ChoiceRadio_-1_-1" name="ChoiceRadio_-1" autocomplete="off" value="" />
+				<span id="ChoiceName_-1_-1"></span>
+			</label>
+		</div>
+	</div>
+	<script>
+		$("span.distNodeId").click(
+			function(){
+				var t = this.innerText;
+				$(this).parent().parent().find("input[type=text]")[0].value = t;
+				// $("#TargetNodeId").val(t);
+			}
+		);
+	</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "name": "xpieldijkstramessagegenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/jquery": "^3.3.33",
+    "@types/lodash": "^4.14.149",
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.1.1",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.2",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode development",
+    "production": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keikitazawa/XpielDijkstraMessageGenerator.git"
+  },
+  "author": "keikitazawa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/keikitazawa/XpielDijkstraMessageGenerator/issues"
+  },
+  "homepage": "https://github.com/keikitazawa/XpielDijkstraMessageGenerator#readme"
+}
