@@ -1,7 +1,7 @@
 // const webpack = require("webpack");
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-// const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 let config = {
 	// モード値を production に設定すると最適化された状態で、
@@ -55,6 +55,7 @@ let config = {
 			  context: `${__dirname}`
 			}
 		  ]),
+		new CleanWebpackPlugin(),
 	],
 	externals: {
 		jQuery: "jQuery",
