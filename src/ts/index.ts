@@ -329,7 +329,6 @@ class LocationBuilder {
 			// 隣接が端のチャンネルの場合は逆順に並べる
 			if (targetNodeInfo.channelIndexes.slice(-1)[0] == lastChannelIndex){
 				channelIndexes = channelIndexes.sort((a, b) => -1);
-				console.log(channelIndexes.toString());
 			// 直前リージョンのチャンネルがある場合はこれを先頭にする
 			}else if(channelIndexes.findIndex(c => c == lastChannelIndex) > -1) {
 				channelIndexes = channelIndexes.filter(n => n != lastChannelIndex);
