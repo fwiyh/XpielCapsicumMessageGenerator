@@ -1,6 +1,6 @@
 // const webpack = require("webpack");
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 let config = {
@@ -22,14 +22,14 @@ let config = {
 				test: /\.ts$/,
 				// TypeScript をコンパイルする
 				use: [
-					{ 
+					{
 						loader: "babel-loader",
 						options: {
 							presets: [
-							  // プリセットを指定することで、ES2020 を ES5 に変換
-							  '@babel/preset-env',
+								// プリセットを指定することで、ES2020 を ES5 に変換
+								'@babel/preset-env',
 							]
-						  }
+						}
 					},
 					{ loader: "ts-loader" },
 				],
@@ -48,13 +48,16 @@ let config = {
 		]
 	},
 	plugins: [
-		new CopyPlugin([
+		new CopyWebpackPlugin([
 			{
-			  from: `${__dirname}/public`,
-			  to: `${__dirname}/dist`,
-			  context: `${__dirname}`
-			}
-		  ]),
+				from: `${__dirname}/public`,
+				to: `${__dirname}/dist`,
+				context: `${__dirname}`,
+				force: true,
+			},
+		],
+		{ copyUnmodified: true }
+		),
 		new CleanWebpackPlugin(),
 	],
 	externals: {
@@ -63,9 +66,9 @@ let config = {
 };
 
 module.exports = (env, argv) => {
-	if (argv.mode === "production"){
+	if (argv.mode === "production") {
 		config.mode = "production";
-	}else {
+	} else {
 		config.mode = "development";
 		config.devtool = "source-map";
 	}
