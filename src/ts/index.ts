@@ -10,7 +10,7 @@ window.onload = (e: any) => {
 	let availableNode = data.regions.flatMap(r => r.locations.map(l => l.id));
 	const dijkstra = new Dijkstra();
 	const a = <HTMLInputElement>document.getElementById("TestBlock");
-	if (a != null){
+	if (a != null) {
 		a.innerText = "経路計算";
 		a.onclick = () => {
 			const startId: HTMLInputElement = <HTMLInputElement>document.getElementById("StartId");
@@ -43,15 +43,15 @@ window.onload = (e: any) => {
 };
 
 class LocationBuilder {
-	
+
 	// メッセージ区切り文字の設定
 	private regionLocationDelimiter!: string;
 	private locationDelimiter!: string;
 	private locationChannelDelimiter!: string;
 	private channelDelimiter!: string;
 	private regionJoinDelimiter!: string;
-	
-	constructor(){
+
+	constructor() {
 		this.renewConfig();
 		this.copyRegions();
 		this.putEvents();
@@ -60,8 +60,8 @@ class LocationBuilder {
 	/**
 	 * リージョンの複写
 	 */
-	private copyRegions(){
-		for (let i = 0; i < data.regions.length; i++){
+	private copyRegions() {
+		for (let i = 0; i < data.regions.length; i++) {
 			$("#Region_-1")
 				.clone(true)
 				.appendTo("#PositionContent")
@@ -71,7 +71,7 @@ class LocationBuilder {
 			$("#Region_" + i + " #RegionIndex_-1").prop("id", "RegionIndex_" + i);
 
 			// 値の設定
-			for (let j = 0; j < data.channels.length; j++){
+			for (let j = 0; j < data.channels.length; j++) {
 				this.copyLocationList(data.channels[j], data.regions[i].locations, i, j);
 				$("#Region_" + i).show();
 			}
@@ -88,7 +88,7 @@ class LocationBuilder {
 	 * @param regionIndex 
 	 * @param locationIndex 
 	 */
-	private copyLocationList(channels: Channel, locations: Location[], regionIndex: number, locationIndex: number){
+	private copyLocationList(channels: Channel, locations: Location[], regionIndex: number, locationIndex: number) {
 		$("#Location_-1")
 			.clone(true)
 			.appendTo("#Region_" + regionIndex)
@@ -102,10 +102,10 @@ class LocationBuilder {
 			.prop("id", "Choice_" + regionIndex + "_" + locationIndex + "_-1");
 
 		// 結果の投入
-		$("#LocName_" +  + regionIndex + "_" + locationIndex).text(channels.name);
-		$("#LocationIndex_" +  + regionIndex + "_" + locationIndex).val(channels.index);
+		$("#LocName_" + + regionIndex + "_" + locationIndex).text(channels.name);
+		$("#LocationIndex_" + + regionIndex + "_" + locationIndex).val(channels.index);
 		this.copyLocationChoices(locations, regionIndex, locationIndex);
-		$("#Location_" +  + regionIndex + "_" + locationIndex).show();
+		$("#Location_" + + regionIndex + "_" + locationIndex).show();
 	}
 
 	/**
@@ -114,8 +114,8 @@ class LocationBuilder {
 	 * @param regionIndex 
 	 * @param locationIndex 
 	 */
-	private copyLocationChoices(locations: Location[], regionIndex: number, locationIndex: number){
-		for (var i = 0; i < locations.length; i++){
+	private copyLocationChoices(locations: Location[], regionIndex: number, locationIndex: number) {
+		for (var i = 0; i < locations.length; i++) {
 			$("#Choice_" + regionIndex + "_" + locationIndex + "_-1")
 				.clone(true)
 				.insertBefore("#Choice_" + regionIndex + "_" + locationIndex + "_-1")
@@ -140,7 +140,7 @@ class LocationBuilder {
 	/**
 	 * イベントの設定
 	 */
-	private putEvents(){
+	private putEvents() {
 		// イベントの挿入
 		const radios: HTMLInputElement[] = <HTMLInputElement[]><unknown>document.querySelectorAll("input[id^=ChoiceRadio_");
 		radios.forEach(
@@ -162,17 +162,17 @@ class LocationBuilder {
 		// クリップボードコピー
 		$("#ClipBoard").on(
 			"click",
-			function(){
-				let copyText = document.querySelector("#Message"); 
+			function () {
+				let copyText = document.querySelector("#Message");
 				if (copyText != null) {
 					let range = document.createRange();
 					range.selectNodeContents(copyText);
-				
+
 					let selection = window.getSelection();
-					if (selection != null){
+					if (selection != null) {
 						selection.removeAllRanges();
 						selection.addRange(range);
-					
+
 						document.execCommand("copy");
 					}
 				}
@@ -180,10 +180,10 @@ class LocationBuilder {
 		);
 		// 設定関係の隠しコマンド
 		$(window).keydown(
-			function(event){
+			function (event) {
 				// ctrl + shift
-				console.debug(event.ctrlKey + " " + event.shiftKey  + "" + event.keyCode);
-				if (event.ctrlKey && event.shiftKey && event.keyCode == 67){
+				console.debug(event.ctrlKey + " " + event.shiftKey + "" + event.keyCode);
+				if (event.ctrlKey && event.shiftKey && event.keyCode == 67) {
 					$("#Config").toggle();
 					return false;
 				}
@@ -193,21 +193,21 @@ class LocationBuilder {
 	/**
 	 * 設定変更
 	 */
-	private renewConfig(){
+	private renewConfig() {
 		this.regionLocationDelimiter = $("#ConfigRegionLocationDelimiter").val()?.toString() ?? "";
 		this.locationDelimiter = $("#ConfigLocationDelimiter").val()?.toString() ?? "";
 		this.locationChannelDelimiter = $("#ConfigLocationChannelDelimiter").val()?.toString() ?? "";
 		this.channelDelimiter = $("#ConfigChannelDelimiter").val()?.toString() ?? "";
 		this.regionJoinDelimiter = $("#ConfigRegionJoinDelimiter").val()?.toString() ?? "";
 	}
-	
+
 	/**
 	 * メッセージの作成
 	 */
-	private buildMessage(){
+	private buildMessage() {
 		let regions: RegionMessage[] = [];
 		$("input[type=radio][name^=ChoiceRadio_]:checked").each(
-			function(){
+			function () {
 				/**
 				 * リージョンの特定
 				 */
@@ -217,9 +217,9 @@ class LocationBuilder {
 				// 処理対象index
 				let currentRegionIndex = regions.findIndex(r => r.regionIndex == regionIndex);
 				// 既存ノードがない場合は新規のノードを作成して処理中Indexを更新
-				if (currentRegionIndex < 0){
+				if (currentRegionIndex < 0) {
 					regions.push(new RegionMessage(regionName, regionIndex));
-					currentRegionIndex = regions.length -1;
+					currentRegionIndex = regions.length - 1;
 				}
 
 				/**
@@ -237,7 +237,7 @@ class LocationBuilder {
 				// 選択肢の配列があればメッセージの追記
 				if (msgIndex > -1) {
 					regions[currentRegionIndex].nodeInfo[msgIndex].channelIndexes.push(channelIndex);
-				}else {
+				} else {
 					const posInfo = new NodeInfo(nodeId, [channelIndex]);
 					regions[currentRegionIndex].nodeInfo.push(posInfo);
 				}
@@ -251,7 +251,7 @@ class LocationBuilder {
 	 * ソートしてメッセージを作成
 	 * @param regions 
 	 */
-	private optimizeSort(regions: RegionMessage[]){
+	private optimizeSort(regions: RegionMessage[]) {
 		let messages: string[] = [];
 		let targetNodeId: string = "";
 		let lastChannelIndex: number = -1;
@@ -265,17 +265,16 @@ class LocationBuilder {
 			while (tmpMessages.length > 0) {
 				// メッセージ内で最もchannelIndexの小さいものを取得
 				const availableNode = tmpMessages.map(p => p.nodeId);
-				targetNodeId = this.findNextNodeId(targetNodeId, availableNode, tmpMessages);
+				targetNodeId = this.findNextNodeId(targetNodeId, availableNode, tmpMessages, lastChannelIndex);
 				// メッセージ作成処理
 				this.buildNodeMessage(tmpMessages, retMsgs, targetNodeId, lastChannelIndex);
+				// このリージョンの最終チャンネルindex
+				const lastChannelIndexes = tmpMessages[tmpMessages.length-1].channelIndexes;
+				lastChannelIndex = lastChannelIndexes[lastChannelIndexes.length-1];
 				// 処理後の配列を削除
 				tmpMessages = tmpMessages.filter(m => m.nodeId != targetNodeId);
 			}
 			messages.push(r.regionName + this.regionLocationDelimiter + retMsgs.join(this.locationDelimiter));
-			// このリージョンの最終チャンネルindex
-			lastChannelIndex = r.nodeInfo[r.nodeInfo.length-1]
-								.channelIndexes[r.nodeInfo[r.nodeInfo.length-1].channelIndexes.length-1];
-
 		});
 		return messages.join(this.regionJoinDelimiter);
 	}
@@ -286,29 +285,28 @@ class LocationBuilder {
 	 * @param nodes 
 	 * @param tmpMessages 
 	 */
-	private findNextNodeId(previousNodeId: string, nodes: string[], tmpMessages: NodeInfo[]){
+	private findNextNodeId(previousNodeId: string, nodes: string[], tmpMessages: NodeInfo[], lastChannelIndex: number) {
 		// 初回の場合は起点計算
-		if (previousNodeId == ""){
+		if (previousNodeId == "") {
 			return tmpMessages[0].nodeId;
 		}
+		// 同じチャンネルがあればそこ
+		const nextChannel: NodeInfo = <NodeInfo>tmpMessages.find(i => i.channelIndexes.indexOf(lastChannelIndex) > -1);
+		if (nextChannel != null) {
+			return nextChannel.nodeId;
+		}
+		// N件処理の最適化
 		const dijkstra = new Dijkstra();
-		// 隣接2件を検索
-		const nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, nodes, 2);
-
+		// 隣接検索
+		const nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, nodes, 1);
 		let nextNodeId = "";
 		// チャンネル数の比較
-		switch (nextNodes.length){
+		switch (nextNodes.length) {
 			case 0:
 				return nextNodeId;
-			case 1:
-				return nextNodes[0].nodeId;
 			default:
-				const firstChannels: number[] = <number[]>tmpMessages.find(p => p.nodeId == nextNodes[0].nodeId)?.channelIndexes;
-				const secondChannels: number[] = <number[]>tmpMessages.find(p => p.nodeId == nextNodes[1].nodeId)?.channelIndexes;
-				// 2番目のノードのチャンネル数が多い場合のみ2番目を選択する
-				nextNodeId = firstChannels?.length >= secondChannels?.length ? nextNodes[0].nodeId : nextNodes[1].nodeId;
+				return nextNodes[0].nodeId;
 		}
-		return nextNodeId;
 	}
 
 	/**
@@ -318,19 +316,19 @@ class LocationBuilder {
 	 * @param nodeId 
 	 * @param lastChannelIndex 
 	 */
-	private buildNodeMessage(tmpMessages: NodeInfo[], retMsgs: string[], nodeId: string, lastChannelIndex: number){
+	private buildNodeMessage(tmpMessages: NodeInfo[], retMsgs: string[], nodeId: string, lastChannelIndex: number) {
 		const targetNodeInfo = tmpMessages.find(p => p.nodeId == nodeId) ?? null;
-		if (targetNodeInfo == null){
+		if (targetNodeInfo == null) {
 			return;
 		}
 		// メッセージ内で最もchannelIndexの小さいものを取得
 		let channelIndexes: number[] = targetNodeInfo.channelIndexes ?? [];
-		if (lastChannelIndex > -1 ){
+		if (lastChannelIndex > -1) {
 			// 隣接が端のチャンネルの場合は逆順に並べる
-			if (targetNodeInfo.channelIndexes.slice(-1)[0] == lastChannelIndex){
+			if (targetNodeInfo.channelIndexes.slice(-1)[0] == lastChannelIndex) {
 				channelIndexes = channelIndexes.sort((a, b) => -1);
-			// 直前リージョンのチャンネルがある場合はこれを先頭にする
-			}else if(channelIndexes.findIndex(c => c == lastChannelIndex) > -1) {
+				// 直前リージョンのチャンネルがある場合はこれを先頭にする
+			} else if (channelIndexes.findIndex(c => c == lastChannelIndex) > -1) {
 				channelIndexes = channelIndexes.filter(n => n != lastChannelIndex);
 				channelIndexes.unshift(lastChannelIndex);
 			}
@@ -346,7 +344,7 @@ class LocationBuilder {
 	 * ノードIDからノード名の取得
 	 * @param nodeId 
 	 */
-	private getLocatonName(locationId: string){
+	private getLocatonName(locationId: string) {
 		let regions = data.regions;
 		let labels = regions.flatMap(r => r.locations);
 		return labels.find(l => l.id == locationId)?.name;
@@ -355,9 +353,9 @@ class LocationBuilder {
 	 * 複数のチャンネルindexをチャンネル名に変更
 	 * @param channelIndexes 
 	 */
-	private getChannelNames(channelIndexes: number[]){
+	private getChannelNames(channelIndexes: number[]) {
 		let channelNames: string[] = [];
-		for (let i = 0; i < channelIndexes.length; i++){
+		for (let i = 0; i < channelIndexes.length; i++) {
 			let f = data.channels.find(c => c.index == channelIndexes[i]) ?? new Channel();
 			channelNames.push(f.message);
 		}
@@ -373,7 +371,7 @@ class RegionMessage {
 	regionIndex: number;
 	nodeInfo: NodeInfo[];
 
-	constructor(regionName: string, regionIndex: number, nodeInfo: NodeInfo[] = []){
+	constructor(regionName: string, regionIndex: number, nodeInfo: NodeInfo[] = []) {
 		this.regionName = regionName;
 		this.regionIndex = regionIndex;
 		this.nodeInfo = nodeInfo;
@@ -387,8 +385,8 @@ class NodeInfo {
 	nodeId: string;
 	// チャンネルindex
 	channelIndexes: number[];
-	
-	constructor(nodeId: string, channelIndexes: number[]){
+
+	constructor(nodeId: string, channelIndexes: number[]) {
 		this.nodeId = nodeId;
 		this.channelIndexes = channelIndexes;
 	}
