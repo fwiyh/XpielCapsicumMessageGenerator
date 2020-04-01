@@ -254,33 +254,33 @@ class LocationBuilder {
 	private optimizeSort(regions: RegionMessage[]) {
 		let messages: string[] = [];
 		let targetNodeId: string = "";
-		let lastChannelIndex: number = -1;
-		// 最初のリージョン
-		let isFirstRegion = true;
+
+		// 前リージョンの最終チャンネル
+		let previousRegionChannelIndex = -1;
 		
 		regions.forEach(r => {
 			// リージョン単位で設定する出力メッセージ
 			const retMsgs: string[] = [];
 			// リージョン内未処理NodeInfo
 			let tmpMessages: NodeInfo[] = lodash.cloneDeep(r.nodeInfo);
+			// リージョン内末端
+			let lastChannelIndex: number = -1;
 
 			// 次の計算 同じregionで未選択 && 近いnode
 			while (tmpMessages.length > 0) {
 				// メッセージ内で最もchannelIndexの小さいものを取得
 				const availableNode = tmpMessages.map(p => p.nodeId);
-				targetNodeId = this.findNextNodeId(targetNodeId, availableNode, tmpMessages, lastChannelIndex, isFirstRegion);
+				targetNodeId = this.findNextNodeId(targetNodeId, availableNode, tmpMessages, previousRegionChannelIndex);
 				// メッセージ作成処理
-				this.buildNodeMessage(tmpMessages, retMsgs, targetNodeId, lastChannelIndex);
+				this.buildNodeMessage(tmpMessages, retMsgs, targetNodeId, previousRegionChannelIndex);
+				// 削除前に直前の最終チャンネルを取得
+				lastChannelIndex = tmpMessages.slice(-1)[0].channelIndexes.slice(-1)[0];
 				// 処理後の配列を削除
 				tmpMessages = tmpMessages.filter(m => m.nodeId != targetNodeId);
 			}
 			messages.push(r.regionName + this.regionLocationDelimiter + retMsgs.join(this.locationDelimiter));
 			// このリージョンの最終チャンネルindex
-			lastChannelIndex = r.nodeInfo[r.nodeInfo.length-1]
-							.channelIndexes[r.nodeInfo[r.nodeInfo.length-1].channelIndexes.length-1];
-
-			// 
-			isFirstRegion = false;
+			previousRegionChannelIndex = lastChannelIndex;
 		});
 		return messages.join(this.regionJoinDelimiter);
 	}
@@ -290,8 +290,10 @@ class LocationBuilder {
 	 * @param previousNodeId 
 	 * @param nodes 
 	 * @param tmpMessages 
+	 * @param lastChannelIndex 
+	 * @param isFirstRegion 
 	 */
-	private findNextNodeId(previousNodeId: string, nodes: string[], tmpMessages: NodeInfo[], lastChannelIndex: number, isFirstNode: boolean) {
+	private findNextNodeId(previousNodeId: string, nodes: string[], tmpMessages: NodeInfo[], lastChannelIndex: number) {
 		let nextNodeId = "";
 		// 初回の場合は起点計算
 		if (previousNodeId == "") {
@@ -300,7 +302,7 @@ class LocationBuilder {
 		// N件処理の最適化
 		const dijkstra = new Dijkstra();
 		// 最初のノードは隣接比較で多いノードを優先
-		if (isFirstNode) {
+		if (lastChannelIndex == -1) {
 			const nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, nodes, nodes.length);
 			// チャンネル数の比較
 			switch (nextNodes.length) {
@@ -325,14 +327,7 @@ class LocationBuilder {
 			} else {
 				// 隣接検索
 				const nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, nodes, 1);
-				// チャンネル数の比較
-				switch (nextNodes.length) {
-					case 0:
-						break;
-					default:
-						nextNodeId = nextNodes[0].nodeId;
-						break;
-				}
+				nextNodeId = nextNodes[0].nodeId ?? "";
 			}
 		}
 		return nextNodeId;
