@@ -255,6 +255,9 @@ class LocationBuilder {
 		let messages: string[] = [];
 		let targetNodeId: string = "";
 		let lastChannelIndex: number = -1;
+		// 最初のリージョン
+		let isFirstRegion = true;
+		
 		regions.forEach(r => {
 			// リージョン単位で設定する出力メッセージ
 			const retMsgs: string[] = [];
@@ -265,16 +268,19 @@ class LocationBuilder {
 			while (tmpMessages.length > 0) {
 				// メッセージ内で最もchannelIndexの小さいものを取得
 				const availableNode = tmpMessages.map(p => p.nodeId);
-				targetNodeId = this.findNextNodeId(targetNodeId, availableNode, tmpMessages, lastChannelIndex);
+				targetNodeId = this.findNextNodeId(targetNodeId, availableNode, tmpMessages, lastChannelIndex, isFirstRegion);
 				// メッセージ作成処理
 				this.buildNodeMessage(tmpMessages, retMsgs, targetNodeId, lastChannelIndex);
-				// このリージョンの最終チャンネルindex
-				const lastChannelIndexes = tmpMessages[tmpMessages.length-1].channelIndexes;
-				lastChannelIndex = lastChannelIndexes[lastChannelIndexes.length-1];
 				// 処理後の配列を削除
 				tmpMessages = tmpMessages.filter(m => m.nodeId != targetNodeId);
 			}
 			messages.push(r.regionName + this.regionLocationDelimiter + retMsgs.join(this.locationDelimiter));
+			// このリージョンの最終チャンネルindex
+			lastChannelIndex = r.nodeInfo[r.nodeInfo.length-1]
+							.channelIndexes[r.nodeInfo[r.nodeInfo.length-1].channelIndexes.length-1];
+
+			// 
+			isFirstRegion = false;
 		});
 		return messages.join(this.regionJoinDelimiter);
 	}
@@ -285,28 +291,51 @@ class LocationBuilder {
 	 * @param nodes 
 	 * @param tmpMessages 
 	 */
-	private findNextNodeId(previousNodeId: string, nodes: string[], tmpMessages: NodeInfo[], lastChannelIndex: number) {
+	private findNextNodeId(previousNodeId: string, nodes: string[], tmpMessages: NodeInfo[], lastChannelIndex: number, isFirstNode: boolean) {
+		let nextNodeId = "";
 		// 初回の場合は起点計算
 		if (previousNodeId == "") {
 			return tmpMessages[0].nodeId;
 		}
-		// 同じチャンネルがあればそこ
-		const nextChannel: NodeInfo = <NodeInfo>tmpMessages.find(i => i.channelIndexes.indexOf(lastChannelIndex) > -1);
-		if (nextChannel != null) {
-			return nextChannel.nodeId;
-		}
 		// N件処理の最適化
 		const dijkstra = new Dijkstra();
-		// 隣接検索
-		const nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, nodes, 1);
-		let nextNodeId = "";
-		// チャンネル数の比較
-		switch (nextNodes.length) {
-			case 0:
-				return nextNodeId;
-			default:
-				return nextNodes[0].nodeId;
+		// 最初のノードは隣接比較で多いノードを優先
+		if (isFirstNode) {
+			const nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, nodes, nodes.length);
+			// チャンネル数の比較
+			switch (nextNodes.length) {
+				case 0:
+					nextNodeId = nextNodeId;
+					break;
+				case 1:
+					nextNodeId = nextNodes[0].nodeId;
+					break;
+				default:
+					const firstChannels: number[] = <number[]>tmpMessages.find(p => p.nodeId == nextNodes[0].nodeId)?.channelIndexes;
+					const secondChannels: number[] = <number[]>tmpMessages.find(p => p.nodeId == nextNodes[1].nodeId)?.channelIndexes;
+					// 2番目のノードのチャンネル数が多い場合のみ2番目を選択する
+					nextNodeId = firstChannels?.length >= secondChannels?.length ? nextNodes[0].nodeId : nextNodes[1].nodeId
+					break;
+			}
+		} else {
+			// 同じチャンネルがあればそこ
+			const nextChannel: NodeInfo = <NodeInfo>tmpMessages.find(i => i.channelIndexes.indexOf(lastChannelIndex) > -1);
+			if (nextChannel != null) {
+				nextNodeId = nextChannel.nodeId;
+			} else {
+				// 隣接検索
+				const nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, nodes, 1);
+				// チャンネル数の比較
+				switch (nextNodes.length) {
+					case 0:
+						break;
+					default:
+						nextNodeId = nextNodes[0].nodeId;
+						break;
+				}
+			}
 		}
+		return nextNodeId;
 	}
 
 	/**
@@ -327,8 +356,8 @@ class LocationBuilder {
 			// 隣接が端のチャンネルの場合は逆順に並べる
 			if (targetNodeInfo.channelIndexes.slice(-1)[0] == lastChannelIndex) {
 				channelIndexes = channelIndexes.sort((a, b) => (b - a));
-			// 直前リージョンのチャンネルがある場合はこれを先頭にする
 			} else if (channelIndexes.indexOf(lastChannelIndex) > -1) {
+				// 直前リージョンのチャンネルがある場合はこれを先頭にする
 				channelIndexes = channelIndexes.filter(n => n != lastChannelIndex);
 				channelIndexes.unshift(lastChannelIndex);
 			}
