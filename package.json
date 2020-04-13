@@ -1,15 +1,27 @@
 {
-  "name": "xpielcapsicummessagegenerator",
-  "version": "1.0.0",
-  "description": "",
-  "main": "webpack.config.js",
+  "author": "keikitazawa",
+  "browserslist": {
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  },
   "dependencies": {
-    "jquery": "^3.4.1",
-    "lodash": "^4.17.15"
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "lodash": "^4.17.15",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "@babel/preset-typescript": "^7.9.0",
     "@types/jquery": "^3.3.34",
     "@types/lodash": "^4.14.149",
@@ -21,19 +33,17 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "license": "MIT",
+  "main": "webpack.config.js",
+  "name": "xpielcapsicummessagegenerator",
+  "private": true,
   "scripts": {
-    "dev": "webpack --mode development --watch",
     "build": "webpack --mode development",
+    "dev": "webpack --mode development --watch",
     "production": "webpack --mode production"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/keikitazawa/XpielDijkstraMessageGenerator.git"
-  },
-  "author": "keikitazawa",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/keikitazawa/XpielDijkstraMessageGenerator/issues"
-  },
-  "homepage": "https://github.com/keikitazawa/XpielDijkstraMessageGenerator#readme"
+  "version": "3.0.0"
 }

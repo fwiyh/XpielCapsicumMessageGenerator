@@ -95,7 +95,6 @@ export class Dijkstra {
 
 	/**
 	 * 経路検索のロジック
-	 * http://nw.tsuda.ac.jp/lec/dijkstra/
 	 * 1. 各ノードのコストをinfinityにする
 	 * 2. 未確定経路の中から次のノードへのコストが最も小さい経路を洗濯
 	 * 3. ノードが過去のコストより小さい場合はコストを更新

@@ -9,7 +9,7 @@ let config = {
 	// mode: 'development', // "production" | "development" | "none"
 
 	// メインとなるJavaScriptファイル（エントリーポイント）
-	entry: __dirname + '/src/ts/index.ts',
+	entry: __dirname + '/src/ts/index.tsx',
 	output: {
 		path: path.join(__dirname, "dist"),
 		filename: "index.js",
@@ -18,9 +18,8 @@ let config = {
 	module: {
 		rules: [
 			{
-				// 拡張子 .ts の場合
-				test: /\.ts$/,
-				// TypeScript をコンパイルする
+				test: /\.ts(x?)$/,
+				exclude: ['/node_modules/', '/src/scss/'],
 				use: [
 					{
 						loader: "babel-loader",
@@ -34,7 +33,7 @@ let config = {
 					{ loader: "ts-loader" },
 				],
 				exclude: /node_modules|\.d\.ts$/,
-			},
+			},			
 		]
 	},
 	// import 文で .ts ファイルを解決するため
@@ -43,8 +42,9 @@ let config = {
 			"node_modules", // node_modules 内も対象とする
 		],
 		extensions: [
-			'.ts',
-			'.js' // node_modulesのライブラリ読み込みに必要
+			".ts",
+			".tsx",
+			".js", // node_modulesのライブラリ読み込みに必要
 		]
 	},
 	plugins: [
@@ -60,9 +60,6 @@ let config = {
 		),
 		new CleanWebpackPlugin(),
 	],
-	externals: {
-		jQuery: "jQuery",
-	},
 };
 
 module.exports = (env, argv) => {
