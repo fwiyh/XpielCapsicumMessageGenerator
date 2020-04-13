@@ -13,6 +13,9 @@
     ],
     "jsx": "react",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "forceConsistentCasingInFileNames": true,
+  },
+  "exclude": [
+    "src/*.config.ts",
+  ],
 }

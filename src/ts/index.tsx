@@ -7,6 +7,9 @@ import lodash from "lodash";
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Config from "./component/Config";
+import userEnv from "userEnv";
+
 class Hello extends React.Component<any, any> {
 
     constructor(props: any) {
@@ -30,4 +33,6 @@ class Hello extends React.Component<any, any> {
     }
   }
   
-  ReactDOM.render(<Hello />, document.getElementById("Root"));
+ReactDOM.render(<Config />, document.getElementById("Root"));
+
+console.log(userEnv.regionLocation);
