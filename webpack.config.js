@@ -9,9 +9,7 @@ let config = {
 	// mode: "development", // "production" | "development" | "none"
 
 	// メインとなるJavaScriptファイル（エントリーポイント）
-	entry: {
-		index: __dirname + "/src/ts/index.tsx",
-	},
+	entry: __dirname + "/src/ts/index.tsx",
 	output: {
 		path: path.join(__dirname, "dist"),
 		filename: "index.js",
@@ -40,9 +38,6 @@ let config = {
 	},
 	// import 文で .ts ファイルを解決するため
 	resolve: {
-		alias: {
-			userEnv$: path.resolve(__dirname, "src/development.config.ts")
-		},
 		modules: [
 			"node_modules", // node_modules 内も対象とする
 		],
@@ -50,6 +45,7 @@ let config = {
 			".ts",
 			".tsx",
 			".js", // node_modulesのライブラリ読み込みに必要
+			".json",
 		]
 	},
 	plugins: [
@@ -70,10 +66,10 @@ let config = {
 module.exports = (env, argv) => {
 	if (argv.mode === "production") {
 		config.mode = "production";
-		config.resolve["alias"] = { userEnv$: path.resolve(__dirname, "src/production.config.ts") };
 	} else {
 		config.mode = "development";
 		config.devtool = "source-map";
 	}
+	config.resolve["alias"] = { Configurations$: path.resolve(__dirname, "src", `${config.mode}.config.ts`) };
 	return config;
 };
