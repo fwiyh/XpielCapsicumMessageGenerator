@@ -10,6 +10,4 @@ import ReactDOM from 'react-dom';
 import ConfigForm from "./component/ConfigForm";
 import Configurations from "Configurations";
 
-ReactDOM.render(<ConfigForm />, document.getElementById("Root"));
-
-console.log(Configurations.regionLocation);
+ReactDOM.render(<ConfigForm {...Configurations} />, document.getElementById("Root"));

@@ -1,14 +1,14 @@
 import React from "react";
+import lodash from "lodash";
 
-export default class ConfigForm extends React.Component {
+import { ConfigurationEntity } from "../../entity/ConfiguratoinEntity";
 
-    state = {
-        regionLocation: "",
-        location: "",
-        locationChannel: "",
-        channel: "",
-        regionJoin: " ",
-    };
+export default class ConfigForm extends React.Component<ConfigurationEntity, ConfigurationEntity> {
+
+    constructor(props: ConfigurationEntity){
+        super(props);
+        this.state = lodash.cloneDeep(props);
+    }
 
     render() {
         return (
