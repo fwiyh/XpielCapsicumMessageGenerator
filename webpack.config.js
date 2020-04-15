@@ -70,6 +70,6 @@ module.exports = (env, argv) => {
 		config.mode = "development";
 		config.devtool = "source-map";
 	}
-	config.resolve["alias"] = { Configurations$: path.resolve(__dirname, "src", `${config.mode}.config.ts`) };
+	config.resolve["alias"] = { Configurations$: path.resolve(__dirname, "src", "env", `${config.mode}.config.ts`) };
 	return config;
 };

@@ -1,5 +1,7 @@
-// region information
-export class ConfigurationEntity {
+/**
+ * ConfigFormのprops定義
+ */
+export class ConfigurationsType {
     regionLocation: string = "";
     location: string = "";
     locationChannel: string = "";

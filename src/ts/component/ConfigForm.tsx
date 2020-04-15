@@ -1,11 +1,11 @@
 import React from "react";
 import lodash from "lodash";
 
-import { ConfigurationEntity } from "../../entity/ConfiguratoinEntity";
+import { ConfigurationsType } from "../../entity/ConfigurationsType";
 
-export default class ConfigForm extends React.Component<ConfigurationEntity, ConfigurationEntity> {
+export default class ConfigForm extends React.Component<ConfigurationsType, ConfigurationsType> {
 
-    constructor(props: ConfigurationEntity){
+    constructor(props: ConfigurationsType){
         super(props);
         this.state = lodash.cloneDeep(props);
     }
