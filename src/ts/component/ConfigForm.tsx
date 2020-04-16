@@ -1,22 +1,40 @@
 import React from "react";
 import lodash from "lodash";
 
-import { ConfigurationsType } from "../../entity/ConfigurationsType";
+import ConfigText from "./ConfigText";
 
-export default class ConfigForm extends React.Component<ConfigurationsType, ConfigurationsType> {
+type Param = {
+    regionLocation: string;
+    location: string;
+    locationChannel: string;
+    channel: string;
+    regionJoin: string;
+};
 
-    constructor(props: ConfigurationsType){
+export default class ConfigForm extends React.Component<Param, Param> {
+
+    constructor(props: Param) {
         super(props);
         this.state = lodash.cloneDeep(props);
+    }
+
+    private onChangeConfig(key: string, value: string){
+        if (key in this.state){
+            const obj = JSON.stringify({[key]: value});
+            this.setState(JSON.parse(obj));
+            console.log(this.state);
+        }
     }
 
     render() {
         return (
             <div id="Config">
-                <div className="form-group">
-                    <label>リージョン～ロケーション区切り文字</label>
-                    <input type="text" id="ConfigRegionLocationDelimiter" defaultValue={this.state.regionLocation} />
-                </div>
+                <ConfigText 
+                    name="リージョン～ロケーション区切り文字" 
+                    id="ConfigRegionLocationDelimiter" 
+                    value={this.state.regionLocation} 
+                    changeConfigEvent={(v) => this.onChangeConfig("regionLocation", v)}
+                />
                 <div className="form-group">
                     <label>ロケーション区切り文字</label>
                     <input type="text" id="ConfigLocationDelimiter" defaultValue={this.state.location} />
@@ -33,6 +51,7 @@ export default class ConfigForm extends React.Component<ConfigurationsType, Conf
                     <label>リージョン間区切り文字</label>
                     <input type="text" id="ConfigRegionJoinDelimiter" defaultValue={this.state.regionJoin} />
                 </div>
+                <button onClick={r => console.log(this.state)}>aaa</button>
             </div>
         );
     }
