@@ -1,5 +1,4 @@
 import React from "react";
-import lodash from "lodash";
 
 type Param = {
     name: string;
@@ -12,7 +11,6 @@ export default class ConfigText extends React.Component<Param> {
     
     constructor(props: Param){
         super(props);
-        // this.state = lodash.cloneDeep(props);
     }
 
     render() {

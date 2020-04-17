@@ -1,12 +1,13 @@
 import React from "react";
 
 import ConfigForm from "./ConfigForm";
-import { Configurations } from "Configurations";
+import { Configurations } from "../../data/Configurations";
 import Region from "./Region";
 
 export default class App extends React.Component {
 
     render() {
+        console.log(Configurations);
         return (
             <div className="container">
                 <div id="PositionContent"></div>

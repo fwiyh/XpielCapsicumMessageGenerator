@@ -1,12 +1,19 @@
-import React, { createContext, useContext } from 'react';
+import React, { useContext, useState } from 'react'
+import { Context } from "./Region";
 
-const Location = () => {
+type Param = {
+	name: string;
+}
+
+const Location = (params: Param) => {
+    const { setConfig } = useContext(Context);
+    // console.log(params);
 
     // const { id } = useContext();
     return (
-        <label id="Choice_-1_-1" className="btn btn-info" style={{display: "none"}}>
-            <input type="radio" id="ChoiceRadio_-1_-1" name="ChoiceRadio_-1" defaultValue="" />
-            <span id="ChoiceName_-1_-1"></span>
+        <label className="btn btn-info" style={{display: "block"}}>
+            <input type="radio" name={"Choice_Radio" + params.name} defaultValue="" />
+            {params.name}
         </label>
     )
 }

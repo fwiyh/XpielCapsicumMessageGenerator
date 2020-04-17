@@ -1,11 +1,18 @@
-import React, { createContext, useContext } from 'react'
-import { Context } from "./Region";
+import React from 'react'
+import Location from "./Location";
 
-const Channel = () => {
+type Param = {
+    name: string;
+    value: string;
+}
 
-    const { a } = useContext(Context);
+const Channel = (params: Param) => {
     return (
-        <p>{a}</p>
+        <div>
+            {params.name}:{params.value}
+            <Location name={params.name} />
+            <Location name={params.name} />
+        </div>
     )
 }
 export default Channel;

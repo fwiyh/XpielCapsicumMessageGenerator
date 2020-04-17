@@ -20,6 +20,10 @@
     ],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "types": [
+      "node",
+    ],
+    "declarationMap": false,
   },
   "compileOnSave": true,
   // "exclude": [

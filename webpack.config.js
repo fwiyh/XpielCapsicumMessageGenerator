@@ -1,5 +1,6 @@
 // const webpack = require("webpack");
 const path = require("path");
+const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
@@ -70,6 +71,12 @@ module.exports = (env, argv) => {
 		config.mode = "development";
 		config.devtool = "source-map";
 	}
-	config.resolve["alias"] = { Configurations$: path.resolve(__dirname, "src", "env", `${config.mode}.config.ts`) };
+	config.plugins.push(
+		new webpack.DefinePlugin({
+			"process.env": {
+				"BUILD_MODE": JSON.stringify(config.mode),
+			}
+		})
+	);
 	return config;
 };

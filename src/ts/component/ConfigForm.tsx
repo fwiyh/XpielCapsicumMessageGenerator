@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from 'react';
 import lodash from "lodash";
 
 import ConfigText from "./ConfigText";
@@ -9,7 +9,27 @@ type Param = {
     locationChannel: string;
     channel: string;
     regionJoin: string;
-};
+}
+
+const configContext = {
+    regionLocation: "" as string,
+    location: "" as string,
+    locationChannel: "" as string,
+    channel: "" as string,
+    regionJoin: "" as string,
+    setConfig(key: string, value: string){
+        if (key in configContext){
+            [key] = value;
+        }
+        if (key in configContext){
+            const k: keyof Param = key as keyof Param;
+            configContext[k] = value;
+            console.log("key:" + key + ",value1:" + configContext[k]);
+        }
+        console.log(configContext);
+    }
+}
+export const Context = createContext(configContext);
 
 export default class ConfigForm extends React.Component<Param, Param> {
 
@@ -28,29 +48,37 @@ export default class ConfigForm extends React.Component<Param, Param> {
 
     render() {
         return (
-            <div id="Config">
+            <div id="Config" className="row">
                 <ConfigText 
                     name="リージョン～ロケーション区切り文字" 
                     id="ConfigRegionLocationDelimiter" 
                     value={this.state.regionLocation} 
                     changeConfigEvent={(v) => this.onChangeConfig("regionLocation", v)}
                 />
-                <div className="form-group">
-                    <label>ロケーション区切り文字</label>
-                    <input type="text" id="ConfigLocationDelimiter" defaultValue={this.state.location} />
-                </div>
-                <div className="form-group">
-                    <label>ロケーション～チャンネル区切り文字</label>
-                    <input type="text" id="ConfigLocationChannelDelimiter" defaultValue={this.state.locationChannel} />
-                </div>
-                <div className="form-group">
-                    <label>チャンネル区切り文字</label>
-                    <input type="text" id="ConfigChannelDelimiter" defaultValue={this.state.channel} />
-                </div>
-                <div className="form-group">
-                    <label>リージョン間区切り文字</label>
-                    <input type="text" id="ConfigRegionJoinDelimiter" defaultValue={this.state.regionJoin} />
-                </div>
+                <ConfigText 
+                    name="ロケーション区切り文字" 
+                    id="ConfigLocationDelimiter" 
+                    value={this.state.location} 
+                    changeConfigEvent={(v) => this.onChangeConfig("location", v)}
+                />
+                <ConfigText 
+                    name="ロケーション～チャンネル区切り文字" 
+                    id="ConfigLocationChannelDelimiter" 
+                    value={this.state.locationChannel} 
+                    changeConfigEvent={(v) => this.onChangeConfig("locationChannel", v)}
+                />
+                <ConfigText 
+                    name="チャンネル区切り文字" 
+                    id="ConfigChannelDelimiter" 
+                    value={this.state.channel} 
+                    changeConfigEvent={(v) => this.onChangeConfig("channel", v)}
+                />
+                <ConfigText 
+                    name="リージョン間区切り文字" 
+                    id="ConfigRegionJoinDelimiter" 
+                    value={this.state.regionJoin} 
+                    changeConfigEvent={(v) => this.onChangeConfig("regionJoin", v)}
+                />
                 <button onClick={r => console.log(this.state)}>aaa</button>
             </div>
         );
