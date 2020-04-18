@@ -33,19 +33,21 @@ export const Context = createContext(messageContext);
 
 const Messages = (params: PositionType) => {
     
-    const regions: JSX.Element[] = [];
-    for (const region in params.regions){
-        console.log(region);
-        // regions.push(
-        //     <div id={"Regin_" + region} />
-        // );
+    console.log(params);
+
+    const regionElements: JSX.Element[] = [];
+    for (let i = 0; i < params.regions.length; i++){
+        console.log(params.regions[i]);
+        regionElements.push(
+            <div key={"Regin_" + params.regions[i].index} />
+        );
     }
     console.log(params);
     
     return (
         <div className="row">
             <Context.Provider value={messageContext}>
-                {/* {regions} */}
+                {regionElements}
             </Context.Provider>
         </div>
     )

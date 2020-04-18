@@ -1,11 +1,11 @@
 import React from "react";
+import lodash from "lodash";
 
 import ConfigForm from "./ConfigForm";
 import Messages from "./Messages";
 
+import data from "../../data/positions.json";
 import { Configurations } from "../../data/Configurations";
-import * as data from "../../data/positions.json";
-
 import { PositionType } from "../../types/PositionType";
 
 const App = () => {
