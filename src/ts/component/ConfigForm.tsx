@@ -1,15 +1,8 @@
 import React, { createContext } from 'react';
-import lodash from "lodash";
 
 import ConfigText from "./ConfigText";
 
-type Param = {
-    regionLocation: string;
-    location: string;
-    locationChannel: string;
-    channel: string;
-    regionJoin: string;
-}
+import { ConfigurationsType } from "../../types/ConfigurationsType";
 
 const configContext = {
     regionLocation: "" as string,
@@ -19,68 +12,43 @@ const configContext = {
     regionJoin: "" as string,
     setConfig(key: string, value: string){
         if (key in configContext){
-            [key] = value;
-        }
-        if (key in configContext){
-            const k: keyof Param = key as keyof Param;
+            const k: keyof ConfigurationsType = key as keyof ConfigurationsType;
             configContext[k] = value;
-            console.log("key:" + key + ",value1:" + configContext[k]);
-        }
-        console.log(configContext);
-    }
-}
-export const Context = createContext(configContext);
-
-export default class ConfigForm extends React.Component<Param, Param> {
-
-    constructor(props: Param) {
-        super(props);
-        this.state = lodash.cloneDeep(props);
-    }
-
-    private onChangeConfig(key: string, value: string){
-        if (key in this.state){
-            const obj = JSON.stringify({[key]: value});
-            this.setState(JSON.parse(obj));
-            console.log(this.state);
         }
     }
-
-    render() {
-        return (
-            <div id="Config" className="row">
-                <ConfigText 
-                    name="リージョン～ロケーション区切り文字" 
-                    id="ConfigRegionLocationDelimiter" 
-                    value={this.state.regionLocation} 
-                    changeConfigEvent={(v) => this.onChangeConfig("regionLocation", v)}
-                />
-                <ConfigText 
-                    name="ロケーション区切り文字" 
-                    id="ConfigLocationDelimiter" 
-                    value={this.state.location} 
-                    changeConfigEvent={(v) => this.onChangeConfig("location", v)}
-                />
-                <ConfigText 
-                    name="ロケーション～チャンネル区切り文字" 
-                    id="ConfigLocationChannelDelimiter" 
-                    value={this.state.locationChannel} 
-                    changeConfigEvent={(v) => this.onChangeConfig("locationChannel", v)}
-                />
-                <ConfigText 
-                    name="チャンネル区切り文字" 
-                    id="ConfigChannelDelimiter" 
-                    value={this.state.channel} 
-                    changeConfigEvent={(v) => this.onChangeConfig("channel", v)}
-                />
-                <ConfigText 
-                    name="リージョン間区切り文字" 
-                    id="ConfigRegionJoinDelimiter" 
-                    value={this.state.regionJoin} 
-                    changeConfigEvent={(v) => this.onChangeConfig("regionJoin", v)}
-                />
-                <button onClick={r => console.log(this.state)}>aaa</button>
-            </div>
-        );
-    }
 }
+export const context = createContext(configContext);
+
+const ConfigForm = (param: ConfigurationsType) => {
+    return (
+        <div id="Config">
+            <ConfigText 
+                name="リージョン～ロケーション区切り文字" 
+                id="regionLocation" 
+                value={param.regionLocation} 
+            />
+            <ConfigText 
+                name="ロケーション区切り文字" 
+                id="location" 
+                value={param.location} 
+            />
+            <ConfigText 
+                name="ロケーション～チャンネル区切り文字" 
+                id="locationChannel" 
+                value={param.locationChannel} 
+            />
+            <ConfigText 
+                name="チャンネル区切り文字" 
+                id="channel" 
+                value={param.channel} 
+            />
+            <ConfigText 
+                name="リージョン間区切り文字" 
+                id="regionJoin" 
+                value={param.regionJoin} 
+            />
+            <button onClick={r => console.log(configContext)}>console.log</button>
+        </div>
+    );
+}
+export default ConfigForm;

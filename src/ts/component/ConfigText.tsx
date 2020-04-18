@@ -1,27 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 
-type Param = {
+import { context } from "./ConfigForm";
+
+type ParamType = {
     name: string;
     id: string;
     value: string;
-    changeConfigEvent: (arg1: string) => void ;
 }
 
-export default class ConfigText extends React.Component<Param> {
-    
-    constructor(props: Param){
-        super(props);
-    }
-
-    render() {
-        return (
+const ConfigText = (param: ParamType) => {
+    const { setConfig } = useContext(context);
+    return (
         <div className="form-group">
-            <label>{this.props.name}</label>
-            <input type="text" id={this.props.id} 
-                defaultValue={this.props.value} 
-                onChange={e => {this.props.changeConfigEvent(e.target.value)}}
+            <label>{param.name}</label>
+            <input type="text"
+                id={param.id} 
+                defaultValue={param.value} 
+                onChange={e => {setConfig(param.id, e.target.value)}}
             />
         </div>
-        )
-    }
+    )
 }
+export default ConfigText;

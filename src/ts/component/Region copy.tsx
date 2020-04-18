@@ -1,7 +1,7 @@
-import React, { createContext } from "react";
-import Channel from "./Channel";
+import React, { createContext } from 'react';
+import Channel from './Channel';
 
-import { Position } from "../../entity/PositionEntity";
+import { Position } from '../../entity/PositionEntity';
 
 // keyの列挙型を取得するために設定
 type RegionContextType = {
@@ -40,7 +40,7 @@ const Region = (params: Position) => {
     // }
     
     return (
-        <div id={"RegionName_"}>
+        <div className="row">
             {channels}
        </div>
     )

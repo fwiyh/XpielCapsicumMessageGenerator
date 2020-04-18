@@ -33,7 +33,8 @@ let config = {
 					},
 					{ loader: "ts-loader" },
 				],
-				exclude: /node_modules|\.d\.ts$|\.config\.ts$/,
+				// exclude: /node_modules|\.d\.ts$|\.config\.ts$/,
+				exclude: /node_modules|\.d\.ts$/,
 			},
 		]
 	},

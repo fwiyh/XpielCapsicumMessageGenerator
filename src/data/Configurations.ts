@@ -1,8 +1,6 @@
-import * as devenv from "./development.config";
-import * as prdenv from "./production.config";
-import { ConfigurationsType } from "../entity/ConfigurationsType";
+import { Configurations as devend } from "./development.config";
+import { Configurations as prdenv } from "./production.config";
 
-const Configurations: ConfigurationsType
-     = process.env.BUILD_MODE == "production" ? prdenv.Configurations : devenv.Configurations;
+import { ConfigurationsType } from "../types/ConfigurationsType";
 
-export { Configurations };
+export const Configurations: ConfigurationsType = process.env.BUILD_MODE == "production" ? prdenv : devend;
