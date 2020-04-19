@@ -1,38 +1,33 @@
-import React, { createContext } from "react";
-import { Channel } from "./Channel";
+import React, { useContext } from "react";
+import { Channels } from "./Channels";
+
+import { Context } from "./Messages";
 
 import { PositionType } from "../types/PositionType";
 
-// keyの列挙型を取得するために設定
-type RegionContextType = {
-    a: string,
-    state1: string,
-}
-
 type ParamType = {
-    name: string,
-    positions: PositionType,
-}
-
-const regionContext = {
-    a: "1" as string,
-    state1: "" as string,
+    // Region Index
+    index: number,
 }
 
 export const Region = (params: ParamType) => {
+
+    const { positions } = useContext(Context);
+
     const channels: JSX.Element[] = [];
-    for (let i = 0; i < params.positions.channels.length; i++){
-        const channel = params.positions.channels[i];
+    // Region内チャンネルすべてにlocationを設定する
+    for (let i = 0; i < positions.channels.length; i++){
+        const channel = positions.channels[i];
         channels.push(
-            <div key={"Region_" + channel.index} className="btn-group-toggle col-xs-12 col-sm-12">
-                {channel.name}
-                <Channel key={"Channel_" + i} name={channel.name} value={channel.name} />
+            <div key={"Region_" + channel.index}>
+                <div key={"RegionNameIndex_" + channel.index}>{channel.name}</div>
+                <Channels key={"Channel_" + i} index={params.index} />
             </div>
         );
     }
     
     return (
-        <div>
+        <div className="btn-group-toggle col-xs-12 col-sm-12" data-toggle="buttons">
             {channels}
         </div>
     )
