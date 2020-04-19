@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Context } from "./Region";
+import { Context } from "./Messages";
 
 type Param = {
 	name: string;
@@ -13,7 +13,7 @@ const Location = (params: Param) => {
     return (
         <label className="btn btn-info" style={{display: "block"}}>
             <input type="radio" name={"Choice_Radio" + params.name} defaultValue="" />
-            {params.name}
+            <span>{params.name}</span>
         </label>
     )
 }

@@ -1,15 +1,12 @@
 import React from "react";
-import lodash from "lodash";
 
 import ConfigForm from "./ConfigForm";
-import Messages from "./Messages";
+import { Messages } from "./Messages";
 
-import data from "../../data/positions.json";
-import { Configurations } from "../../data/Configurations";
-import { PositionType } from "../../types/PositionType";
+import data from "../data/positions.json";
+import { Configurations } from "../data/Configurations";
 
-const App = () => {
-    console.log(data);
+export const App = () => {
     return (
         <div className="container">
         <div id="PositionContent"></div>
@@ -22,4 +19,3 @@ const App = () => {
     </div>
     )
 }
-export default App;

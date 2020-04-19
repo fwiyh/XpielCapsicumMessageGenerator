@@ -2,7 +2,7 @@ import React, { createContext } from 'react';
 
 import ConfigText from "./ConfigText";
 
-import { ConfigurationsType } from "../../types/ConfigurationsType";
+import { ConfigurationsType } from "../types/ConfigurationsType";
 
 const configContext = {
     regionLocation: "" as string,

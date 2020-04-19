@@ -1,8 +1,8 @@
-import * as data from "../data/positions.json";
-import { Location } from "../entity/LocationEntity";
-import { Channel } from "../entity/ChannelEntity";
-import { CalculatedNode } from "../entity/CalculatedNodeEntity";
-import { Dijkstra } from "../libs/dijkstra";
+import * as data from "./data/positions.json";
+import { Location } from "./entity/LocationEntity";
+import { Channel } from "./entity/ChannelEntity";
+import { CalculatedNode } from "./entity/CalculatedNodeEntity";
+import { Dijkstra } from "./libs/dijkstra";
 import $ from "jquery";
 import lodash from "lodash";
 

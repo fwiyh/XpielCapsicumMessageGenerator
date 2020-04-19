@@ -10,7 +10,7 @@ let config = {
 	// mode: "development", // "production" | "development" | "none"
 
 	// メインとなるJavaScriptファイル（エントリーポイント）
-	entry: __dirname + "/src/ts/index.tsx",
+	entry: __dirname + "/src/index.tsx",
 	output: {
 		path: path.join(__dirname, "dist"),
 		filename: "index.js",

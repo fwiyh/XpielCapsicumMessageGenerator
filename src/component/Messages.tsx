@@ -1,14 +1,7 @@
 import React, { createContext } from "react";
-import Channel from "./Channel";
 
-import { Region } from "../../entity/RegionEntity";
-import { PositionType } from "../../types/PositionType";
-
-// keyの列挙型を取得するために設定
-type MessageContextType = {
-    a: string,
-    state1: string,
-}
+import { Region } from "./Region";
+import { PositionType } from "../types/PositionType";
 
 // ノード(location)に指定されているチャンネルindex
 type NodeInfoType = {
@@ -17,32 +10,38 @@ type NodeInfoType = {
 	// チャンネルindex
 	channelIndexes: number[];
 }
-type RegionsType = {
+type RegionsContextType = {
 	// リージョン名
 	regionName: string;
 	// リージョンのindex値
 	regionIndex: number;
 	// リージョン内のソート
-	nodeInfo: NodeInfoType[];
+	// nodeInfo: NodeInfoType[];
 }
 
 const messageContext = {
-    regions: [] as RegionsType[],
+    regionName: "" as string,
+    regionIndex: "" as string,
+    // nodeInfo: [] as NodeInfoType[],
+    // regions: [] as RegionsType[],
+    setConfig(key: string, value: string){
+        if (key in messageContext){
+            const k: keyof RegionsContextType = key as keyof RegionsContextType;
+            messageContext[k] = value;
+            console.log("key:" + k + ",value1:" + messageContext[k]);
+        }
+    }
 }
 export const Context = createContext(messageContext);
 
-const Messages = (params: PositionType) => {
-    
-    console.log(params);
-
+export const Messages = (params: PositionType) => {
     const regionElements: JSX.Element[] = [];
     for (let i = 0; i < params.regions.length; i++){
-        console.log(params.regions[i]);
+        const region = params.regions[i];
         regionElements.push(
-            <div key={"Regin_" + params.regions[i].index} />
+            <Region key={"Region_" + i} name={region.name} positions={params} />
         );
     }
-    console.log(params);
     
     return (
         <div className="row">
@@ -52,4 +51,3 @@ const Messages = (params: PositionType) => {
         </div>
     )
 }
-export default Messages;
