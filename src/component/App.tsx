@@ -9,13 +9,14 @@ import { Configurations } from "../data/Configurations";
 export const App = () => {
     return (
         <div className="container">
-        <div id="PositionContent"></div>
+        <Messages {...data} />
         <div id="Message" className="row" style={{height: "1.5rem"}}></div>
         <div className="row">
             <button id="ClipBoard" className="btn-primary">クリップボードにコピー</button>
         </div>
-        <ConfigForm {...Configurations} />
-        <Messages {...data} />
+        <div className="row">
+            <ConfigForm {...Configurations} />
+        </div>
     </div>
     )
 }

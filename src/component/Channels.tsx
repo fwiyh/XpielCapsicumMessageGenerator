@@ -38,6 +38,7 @@ export const Channels = (params: ParamType) => {
 
     return (
         <>
+            <label>{positions.channels[params.channelIndex].name}</label>
             {locations}
         </>
     )

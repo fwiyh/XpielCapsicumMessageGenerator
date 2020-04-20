@@ -20,7 +20,6 @@ export const Region = (params: ParamType) => {
         const channel = positions.channels[i];
         channelElemets.push(
             <div className="btn-group-toggle col-xs-12 col-sm-12" data-toggle="buttons">
-                <label>{channel.name}</label>
                 <Channels key={"Region_" + i + "_" + "Channels_" + i} regionIndex={params.index} channelIndex={channel.index} />
             </div>
         );
@@ -28,6 +27,7 @@ export const Region = (params: ParamType) => {
     
     return (
         <>
+            <label>{positions.regions[params.index].name}</label>
             {channelElemets}
         </>
     )

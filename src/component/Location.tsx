@@ -19,7 +19,11 @@ export const Location = (params: Param) => {
     // const { id } = useContext();
     return (
         <label className="btn btn-info">
-            <input type="radio" name={"Choise_Location_" + params.regionIndex + "_" + params.channelIndex} defaultValue="" />
+            <input 
+                type="radio" 
+                name={"Choise_Location_" + params.regionIndex + "_" + params.channelIndex}
+                defaultValue={params.location.id}
+            />
             <span>{params.location.name}</span>
         </label>
     )
