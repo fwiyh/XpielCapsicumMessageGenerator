@@ -1,4 +1,4 @@
-import { PositionType } from "../types/PositionType";
+import { PositionType } from "../types/position/PositionType";
 
 declare module "*/positions.json" {
 	const value: PositionType;

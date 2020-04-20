@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Location } from "./Location";
 
-import { Context } from "./Messages";
+import { Context } from "./App";
 
-import { Location as LocationType } from "../entity/LocationEntity";
+import { LocationType } from "../types/position/LocationType";
 
 type ParamType = {
     // Region Index
@@ -25,14 +25,12 @@ export const Channels = (params: ParamType) => {
     for (let i = 0; i < regionLocations.length; i++){
         const locationData: LocationType = regionLocations[i];
         locations.push(
-            <>
             <Location 
-                key={"Location_" + params.regionIndex} 
+                key={"Block_Channel_Location__" + params.regionIndex + "_" + params.channelIndex + "_" + i} 
                 regionIndex={params.regionIndex} 
                 channelIndex={params.channelIndex} 
                 location={locationData} 
             />
-            </>
         );
     }
 

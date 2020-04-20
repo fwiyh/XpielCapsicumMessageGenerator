@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
+
 import { Channels } from "./Channels";
-
-import { Context } from "./Messages";
-
-import { PositionType } from "../types/PositionType";
+import { Context } from "./App";
 
 type ParamType = {
     // Region Index
@@ -19,8 +17,10 @@ export const Region = (params: ParamType) => {
     for (let i = 0; i < positions.channels.length; i++){
         const channel = positions.channels[i];
         channelElemets.push(
-            <div className="btn-group-toggle col-xs-12 col-sm-12" data-toggle="buttons">
-                <Channels key={"Region_" + i + "_" + "Channels_" + i} regionIndex={params.index} channelIndex={channel.index} />
+            <div key={"Block_Region_" + params.index + "_" + "Channel_" + i} 
+                className="btn-group-toggle col-xs-12 col-sm-12"
+                data-toggle="buttons">
+                <Channels key={"Region_" + i + "_" + "Channel_" + i} regionIndex={params.index} channelIndex={channel.index} />
             </div>
         );
     }

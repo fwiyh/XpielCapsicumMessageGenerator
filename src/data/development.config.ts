@@ -1,6 +1,6 @@
-import { ConfigurationsType } from "../types/ConfigurationsType";
+import { ConfigurationType } from "../types/position/ConfigurationType";
 
-export const Configurations: ConfigurationsType = {
+export const Configurations: ConfigurationType = {
     regionLocation: "\\",
     location: " ",
     locationChannel: ":",

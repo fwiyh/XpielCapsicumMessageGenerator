@@ -8,7 +8,7 @@ type ParamType = {
     value: string;
 }
 
-const ConfigText = (param: ParamType) => {
+export const ConfigText = (param: ParamType) => {
     const { setConfig } = useContext(context);
     return (
         <div className="form-group">
@@ -21,4 +21,3 @@ const ConfigText = (param: ParamType) => {
         </div>
     )
 }
-export default ConfigText;

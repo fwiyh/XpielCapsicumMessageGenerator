@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-// import { Context } from "./Messages";
+import React, { useContext } from "react";
+import { Context } from "./App";
 
 import { Location as LocationType } from "../entity/LocationEntity";
 
@@ -13,12 +13,15 @@ type Param = {
 }
 
 export const Location = (params: Param) => {
-    // const { setConfig } = useContext(Context);
-    // console.log(params);
-
-    // const { id } = useContext();
+    const { setLocation } = useContext(Context);
+    // region-channel-locationが１セットのデータを扱う
+    // params.regionIndex, params.channelIndex, location
     return (
-        <label className="btn btn-info">
+        <label className="btn btn-info"
+        onClick={() => {
+            setLocation(params.regionIndex, params.location.id, params.channelIndex);
+        }}
+>
             <input 
                 type="radio" 
                 name={"Choise_Location_" + params.regionIndex + "_" + params.channelIndex}

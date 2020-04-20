@@ -1,8 +1,8 @@
-import React, { createContext } from 'react';
+import React, { createContext } from "react";
 
-import ConfigText from "./ConfigText";
+import { ConfigText } from "./ConfigText";
 
-import { ConfigurationsType } from "../types/ConfigurationsType";
+import { ConfigurationType } from "../types/position/ConfigurationType";
 
 const configContext = {
     regionLocation: "" as string,
@@ -12,14 +12,14 @@ const configContext = {
     regionJoin: "" as string,
     setConfig(key: string, value: string){
         if (key in configContext){
-            const k: keyof ConfigurationsType = key as keyof ConfigurationsType;
+            const k: keyof ConfigurationType = key as keyof ConfigurationType;
             configContext[k] = value;
         }
     }
 }
 export const context = createContext(configContext);
 
-const ConfigForm = (param: ConfigurationsType) => {
+export const ConfigForm = (param: ConfigurationType) => {
     return (
         <div id="Config">
             <ConfigText 
@@ -51,4 +51,3 @@ const ConfigForm = (param: ConfigurationsType) => {
         </div>
     );
 }
-export default ConfigForm;
