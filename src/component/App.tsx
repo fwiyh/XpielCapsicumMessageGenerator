@@ -12,33 +12,33 @@ import { NodeInfoType } from "../types/message/NodeInfoType";
 const messageContext = {
     positions: {} as PositionType,
     regionMessages: [] as MessageRegionType[],
-    getContext(){
+    getContext() {
         console.log(messageContext);
     },
-    setLocation(regionIndex: number, nodeId: string, channelIndex: number){
+    setLocation(regionIndex: number, nodeId: string, channelIndex: number) {
         // 対象regionの取得
-        if (messageContext.regionMessages.length == 0){
-            const newRegionInfo: MessageRegionType = {
-                regionIndex: regionIndex,
-                nodeInfo: [],
-                regionName: "",
-            }
-            messageContext.regionMessages = [newRegionInfo];
-        } 
         let targetRegion: MessageRegionType = messageContext.regionMessages.find(r => r.regionIndex == regionIndex) as MessageRegionType;
-        if (messageContext.regionMessages === undefined){
+        // 新規リージョン
+        if (targetRegion === undefined) {
+            const newNodeInfo: NodeInfoType = {
+                nodeId: nodeId,
+                channelIndexes: [channelIndex],
+                nodeName: "",
+                channelNames: [],
+            }
             const newRegionInfo: MessageRegionType = {
                 regionIndex: regionIndex,
-                nodeInfo: [],
+                nodeInfo: [newNodeInfo],
                 regionName: "",
             }
             messageContext.regionMessages = [newRegionInfo];
-            targetRegion = newRegionInfo;
+            return;
         }
-        console.log(messageContext);
+
         // node検索
-        let nodeInfo = targetRegion.nodeInfo.find(n => n.nodeId == nodeId);
-        if (nodeInfo === undefined){
+        let targetNodeInfo: NodeInfoType = targetRegion.nodeInfo.find(n => n.nodeId == nodeId) as NodeInfoType;
+        // リージョン内新規ノード
+        if (targetNodeInfo === undefined) {
             const newNodeInfo: NodeInfoType = {
                 nodeId: nodeId,
                 channelIndexes: [channelIndex],
@@ -46,24 +46,27 @@ const messageContext = {
                 channelNames: [],
             }
             targetRegion.nodeInfo.push(newNodeInfo);
-            nodeInfo = targetRegion.nodeInfo[0];
+            return;
         }
-        console.log(messageContext.regionMessages);
 
         // 既存チャンネルと入れ替え
-        let existChannelRegion = targetRegion.nodeInfo.find(n => {
-            n.channelIndexes.find(c => c == channelIndex)
-        });
-        if (existChannelRegion !== undefined){
-            console.log(existChannelRegion);
-            const existTargetNode: number | undefined = existChannelRegion.channelIndexes.find(c => {c == channelIndex});
-            if (existTargetNode !== undefined){
-                existChannelRegion.channelIndexes = existChannelRegion.channelIndexes.filter(c => c != channelIndex);
+        let existChannelInNode = targetRegion
+                                        .nodeInfo
+                                        .find(n => {
+                                            return n.channelIndexes.find(c => { c == channelIndex });
+                                        });
+        console.log(existChannelInNode);
+        // 既存チャンネルがある場合は置き換える
+        if (existChannelInNode !== undefined) {
+            const existTargetNode: number | undefined = existChannelInNode.channelIndexes.find(c => { c == channelIndex });
+            if (existTargetNode !== undefined) {
+                // あるものは消す
+                existChannelInNode.channelIndexes = existChannelInNode.channelIndexes.filter(c => c != channelIndex);
             }
         }
 
         // 更新後を追加
-        nodeInfo.channelIndexes.push(channelIndex);
+        targetNodeInfo.channelIndexes.push(channelIndex);
 
         console.log(messageContext.regionMessages);
     },
@@ -79,8 +82,8 @@ export const App = () => {
         <Context.Provider value={messageContext}>
             <div className="container">
                 <Messages regionIndexes={...regionIndexes} />
-                <button onClick={() => {messageContext.getContext()}}>Context</button>
-                <div id="Message" className="row" style={{height: "1.5rem"}}></div>
+                <button onClick={() => { messageContext.getContext() }}>Context</button>
+                <div id="Message" className="row" style={{ height: "1.5rem" }}></div>
                 <div className="row">
                     <button id="ClipBoard" className="btn-primary">クリップボードにコピー</button>
                 </div>
