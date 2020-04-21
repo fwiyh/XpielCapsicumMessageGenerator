@@ -51,17 +51,17 @@ const messageContext = {
 
         // 既存チャンネルと入れ替え
         let existChannelInNode = targetRegion
-                                        .nodeInfo
-                                        .find(n => {
-                                            return n.channelIndexes.find(c => { c == channelIndex });
-                                        });
+                                    .nodeInfo
+                                    .find(n => {
+                                        return n.channelIndexes.find(c => { c == channelIndex });
+                                    });
         console.log(existChannelInNode);
         // 既存チャンネルがある場合は置き換える
         if (existChannelInNode !== undefined) {
-            const existTargetNode: number | undefined = existChannelInNode.channelIndexes.find(c => { c == channelIndex });
-            if (existTargetNode !== undefined) {
+            const existChannelIndex: number | undefined = existChannelInNode.channelIndexes.findIndex(c => c == channelIndex);
+            if (existChannelIndex !=  undefined && existChannelIndex > -1) {
                 // あるものは消す
-                existChannelInNode.channelIndexes = existChannelInNode.channelIndexes.filter(c => c != channelIndex);
+                existChannelInNode.channelIndexes.splice(existChannelIndex, 1);
             }
         }
 
