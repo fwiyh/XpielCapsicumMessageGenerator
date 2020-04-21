@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { context } from "./ConfigForm";
+import { Context } from "./App";
 
 type ParamType = {
     name: string;
@@ -9,7 +9,7 @@ type ParamType = {
 }
 
 export const ConfigText = (param: ParamType) => {
-    const { setConfig } = useContext(context);
+    const { setConfig } = useContext(Context);
     return (
         <div className="form-group">
             <label>{param.name}</label>
