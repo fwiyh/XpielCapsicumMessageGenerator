@@ -12,7 +12,7 @@ export const ConfigForm = (param: ConfigurationType) => {
         const onKeyDown = (event: KeyboardEvent) => {
             // ctrl + shift
             console.log(event.ctrlKey + " " + event.shiftKey + " " + event.keyCode);
-            if (event.ctrlKey && event.altKey && event.keyCode == 67) {
+            if (event.ctrlKey && event.shiftKey && event.keyCode == 67) {
                 const newDisplay = displayMode == "none" ? "block" : "none";
                 setDisplay(newDisplay);
             }
