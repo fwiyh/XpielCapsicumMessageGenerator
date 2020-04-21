@@ -70,12 +70,12 @@ const messageContext = {
             const existChannelIndex: number = existChannelInNode.channelIndexes.indexOf(channelIndex);
             if (existChannelIndex > -1) {
                 // あるものは消してソート
-                existChannelInNode.channelIndexes.splice(existChannelIndex, 1).sort((a, b) => a -b);
+                existChannelInNode.channelIndexes.splice(existChannelIndex, 1).sort();
             }
         }
         // 更新後を追加してソート
         targetNodeInfo.channelIndexes.push(channelIndex);
-        targetNodeInfo.channelIndexes.sort((a, b) => a -b);
+        targetNodeInfo.channelIndexes.sort();
     },
     // debug
     getContext() {
