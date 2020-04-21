@@ -69,12 +69,13 @@ const messageContext = {
         if (existChannelInNode !== undefined) {
             const existChannelIndex: number = existChannelInNode.channelIndexes.indexOf(channelIndex);
             if (existChannelIndex > -1) {
-                // あるものは消す
-                existChannelInNode.channelIndexes.splice(existChannelIndex, 1);
+                // あるものは消してソート
+                existChannelInNode.channelIndexes.splice(existChannelIndex, 1).sort((a, b) => a -b);
             }
         }
-        // 更新後を追加
+        // 更新後を追加してソート
         targetNodeInfo.channelIndexes.push(channelIndex);
+        targetNodeInfo.channelIndexes.sort((a, b) => a -b);
     },
     // debug
     getContext() {
@@ -100,6 +101,9 @@ export const App = () => {
                 <div id="Message" className="row" style={{ height: "1.5rem" }}></div>
                 <div className="row">
                     <button id="ClipBoard" className="btn-primary">クリップボードにコピー</button>
+                </div>
+                <div className="row">
+                    <button onClick={() => {messageContext.getContext()}} className="btn-primary">getContext</button>
                 </div>
                 <ConfigForm {...Configurations} />
             </div>
