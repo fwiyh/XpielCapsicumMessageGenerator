@@ -43,7 +43,7 @@ const messageContext = {
                 nodeInfo: [newNodeInfo],
                 regionName: "",
             }
-            messageContext.regionMessages = [newRegionInfo];
+            messageContext.regionMessages.push(newRegionInfo);
             return;
         }
 
@@ -103,10 +103,10 @@ export const App = () => {
                     <Messages regionIndexes={...regionIndexes} />
                     <div id="Message" className="row" style={{ height: "1.5rem" }}></div>
                     <div className="row">
-                        <button id="ClipBoard" className="btn btn-primary">クリップボードにコピー</button>
+                        <button type="button" id="ClipBoard" className="btn btn-primary">クリップボードにコピー</button>
                     </div>
                     <div className="row">
-                        <button onClick={() => {messageContext.getContext()}} className="btn btn-primary">getContext</button>
+                        <button type="button" onClick={() => {messageContext.getContext()}} className="btn btn-primary">getContext</button>
                     </div>
                     <ConfigForm {...Configurations} />
                     <Debug />

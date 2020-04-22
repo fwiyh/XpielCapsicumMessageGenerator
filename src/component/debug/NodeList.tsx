@@ -33,7 +33,7 @@ export const NodeList = (params: ParamType) => {
     }
 
     return (
-        <select className="custom-select" value={defaultValue}>
+        <select className="custom-select" defaultValue={defaultValue}>
             ${locations}
         </select>
     )
