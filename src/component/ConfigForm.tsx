@@ -10,8 +10,7 @@ export const ConfigForm = (param: ConfigurationType) => {
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
-            // ctrl + shift
-            console.log(event.ctrlKey + " " + event.shiftKey + " " + event.keyCode);
+            // ctrl + shift + c
             if (event.ctrlKey && event.shiftKey && event.keyCode == 67) {
                 const newDisplay = displayMode == "none" ? "block" : "none";
                 setDisplay(newDisplay);

@@ -46,21 +46,7 @@ const messageContext = {
             return;
         }
 
-        // node検索
-        const targetNodeInfo: NodeInfoType = targetRegion.nodeInfo.find(n => n.nodeId == nodeId) as NodeInfoType;
-        // リージョン内新規ノード
-        if (targetNodeInfo === undefined) {
-            const newNodeInfo: NodeInfoType = {
-                nodeId: nodeId,
-                channelIndexes: [channelIndex],
-                nodeName: "",
-                channelNames: [],
-            }
-            targetRegion.nodeInfo.push(newNodeInfo);
-            return;
-        }
-
-        // 既存チャンネルと入れ替え
+        // リージョン内ノードにチャンネルがある場合は削除
         const existChannelInNode: NodeInfoType
             = targetRegion.nodeInfo.find(n => {
                                         return n.channelIndexes.indexOf(channelIndex) > -1;
@@ -73,13 +59,28 @@ const messageContext = {
                 existChannelInNode.channelIndexes.splice(existChannelIndex, 1).sort();
             }
         }
-        // 更新後を追加してソート
-        targetNodeInfo.channelIndexes.push(channelIndex);
-        targetNodeInfo.channelIndexes.sort();
+
+        // 削除した後にチャンネルを追加
+        const targetNodeInfo: NodeInfoType = targetRegion.nodeInfo.find(n => n.nodeId == nodeId) as NodeInfoType;
+        // リージョン内新規ノード
+        if (targetNodeInfo === undefined) {
+            const newNodeInfo: NodeInfoType = {
+                nodeId: nodeId,
+                channelIndexes: [channelIndex],
+                nodeName: "",
+                channelNames: [],
+            }
+            targetRegion.nodeInfo.push(newNodeInfo);
+            return;
+        } else {
+            // 更新後を追加してソート
+            targetNodeInfo.channelIndexes.push(channelIndex);
+            targetNodeInfo.channelIndexes.sort();
+        }
     },
     // debug
     getContext() {
-        console.log(messageContext);
+        console.log(messageContext.regionMessages);
     },
 }
 export const Context = createContext(messageContext);
