@@ -11,6 +11,8 @@ import { MessageRegionType } from "../types/message/MessageRegionType";
 import { NodeInfoType } from "../types/message/NodeInfoType";
 import { Debug } from "./debug/Debug";
 
+import { RouteSearch } from "../libs/RouteSearch";
+
 const messageContext = {
     // message config
     regionLocation: "" as string,
@@ -81,7 +83,9 @@ const messageContext = {
     },
     // debug
     getContext() {
-        console.log(messageContext.regionMessages);
+        // console.log(messageContext.regionMessages);
+        const routeSearch = new RouteSearch();
+        routeSearch.buildMessage(messageContext.regionMessages);
     },
 }
 export const Context = createContext(messageContext);
