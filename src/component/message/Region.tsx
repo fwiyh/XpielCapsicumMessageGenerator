@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { Channels } from "./Channels";
-import { Context } from "./App";
+import { Context } from "../App";
 
 type ParamType = {
     // Region Index

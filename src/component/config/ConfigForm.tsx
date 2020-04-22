@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { ConfigText } from "./ConfigText";
 
-import { ConfigurationType } from "../types/position/ConfigurationType";
+import { ConfigurationType } from "../../types/position/ConfigurationType";
 
 export const ConfigForm = (param: ConfigurationType) => {
 
@@ -20,7 +20,7 @@ export const ConfigForm = (param: ConfigurationType) => {
     });
 
     return (
-        <div id="Config" style={{display: displayMode}}>
+        <div id="Config" className="row" style={{display: displayMode}}>
             <ConfigText
                 name="リージョン～ロケーション区切り文字"
                 id="regionLocation"

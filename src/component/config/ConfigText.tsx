@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { Context } from "./App";
+import { Context } from "../App";
 
 type ParamType = {
     name: string;

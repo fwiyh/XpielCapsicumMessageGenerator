@@ -1,7 +1,7 @@
 import React, { createContext } from "react";
 
-import { ConfigForm } from "./ConfigForm";
-import { Messages } from "./Messages";
+import { ConfigForm } from "./config/ConfigForm";
+import { Messages } from "./message/Messages";
 import { PositionType } from "../types/position/PositionType";
 
 import data from "../data/positions.json";
@@ -9,6 +9,7 @@ import { Configurations } from "../data/Configurations";
 import { ConfigurationType } from "../types/position/ConfigurationType";
 import { MessageRegionType } from "../types/message/MessageRegionType";
 import { NodeInfoType } from "../types/message/NodeInfoType";
+import { Debug } from "./debug/Debug";
 
 const messageContext = {
     // message config
@@ -98,15 +99,18 @@ export const App = () => {
     return (
         <Context.Provider value={messageContext}>
             <div className="container">
-                <Messages regionIndexes={...regionIndexes} />
-                <div id="Message" className="row" style={{ height: "1.5rem" }}></div>
-                <div className="row">
-                    <button id="ClipBoard" className="btn-primary">クリップボードにコピー</button>
-                </div>
-                <div className="row">
-                    <button onClick={() => {messageContext.getContext()}} className="btn-primary">getContext</button>
-                </div>
-                <ConfigForm {...Configurations} />
+                <form>
+                    <Messages regionIndexes={...regionIndexes} />
+                    <div id="Message" className="row" style={{ height: "1.5rem" }}></div>
+                    <div className="row">
+                        <button id="ClipBoard" className="btn btn-primary">クリップボードにコピー</button>
+                    </div>
+                    <div className="row">
+                        <button onClick={() => {messageContext.getContext()}} className="btn btn-primary">getContext</button>
+                    </div>
+                    <ConfigForm {...Configurations} />
+                    <Debug />
+                </form>
             </div>
         </Context.Provider>
     )
