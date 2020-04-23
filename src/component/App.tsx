@@ -12,6 +12,7 @@ import { NodeInfoType } from "../types/message/NodeInfoType";
 import { Debug } from "./debug/Debug";
 
 import { RouteSearch } from "../libs/RouteSearch";
+import { LocationType } from "../types/position/LocationType";
 
 const messageContext = {
     // message config
@@ -29,21 +30,20 @@ const messageContext = {
     // position information
     positions: {} as PositionType,
     regionMessages: [] as MessageRegionType[],
-    setLocation(regionIndex: number, nodeId: string, channelIndex: number) {
+    setLocation(regionIndex: number, channelIndex: number, location: LocationType) {
         // 対象regionの取得
         const targetRegion: MessageRegionType = messageContext.regionMessages.find(r => r.regionIndex == regionIndex) as MessageRegionType;
         // 新規リージョン
         if (targetRegion === undefined) {
             const newNodeInfo: NodeInfoType = {
-                nodeId: nodeId,
+                nodeId: location.id,
                 channelIndexes: [channelIndex],
-                nodeName: "",
-                channelNames: [],
+                nodeName: location.name,
             }
             const newRegionInfo: MessageRegionType = {
                 regionIndex: regionIndex,
                 nodeInfo: [newNodeInfo],
-                regionName: "",
+                regionName: messageContext.positions.regions[regionIndex].name,
             }
             messageContext.regionMessages.push(newRegionInfo);
             return;
@@ -64,14 +64,13 @@ const messageContext = {
         }
 
         // 削除した後にチャンネルを追加
-        const targetNodeInfo: NodeInfoType = targetRegion.nodeInfo.find(n => n.nodeId == nodeId) as NodeInfoType;
+        const targetNodeInfo: NodeInfoType = targetRegion.nodeInfo.find(n => n.nodeId == location.id) as NodeInfoType;
         // リージョン内新規ノード
         if (targetNodeInfo === undefined) {
             const newNodeInfo: NodeInfoType = {
-                nodeId: nodeId,
+                nodeId: location.id,
                 channelIndexes: [channelIndex],
-                nodeName: "",
-                channelNames: [],
+                nodeName: location.name,
             }
             targetRegion.nodeInfo.push(newNodeInfo);
             return;

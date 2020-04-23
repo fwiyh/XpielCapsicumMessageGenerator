@@ -7,6 +7,4 @@ export type NodeInfoType = {
 
 	// location name
 	nodeName: string;
-	// channel name
-	channelNames: string[];
 }

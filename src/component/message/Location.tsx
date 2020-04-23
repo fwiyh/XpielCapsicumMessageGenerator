@@ -19,7 +19,7 @@ export const Location = (params: Param) => {
     return (
         <label className="btn btn-info"
         onClick={() => {
-            setLocation(params.regionIndex, params.location.id, params.channelIndex);
+            setLocation(params.regionIndex, params.channelIndex, params.location);
         }}
 >
             <input 

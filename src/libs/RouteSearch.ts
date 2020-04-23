@@ -9,7 +9,21 @@ export class RouteSearch {
     //     nodeInfo: NodeInfoType[];
     //     regionName: string;
     // }
+    // type NodeInfoType = {
+    //     // node id = location id
+    //     nodeId: string;
+    //     // channel index
+    //     channelIndexes: number[];
+    //     // node index
+    //     nodeIndex: number;
+    
+    //     // location name
+    //     nodeName: string;
+    // }
     buildMessage(regionMessages: MessageRegionType[]){
+        if (regionMessages.length == 0){
+            return;
+        }
         // リージョン・チャンネルのソート
         const messages: MessageRegionType[] = lodash.cloneDeep(regionMessages);
         // チャンネルなしを削除
@@ -21,15 +35,14 @@ export class RouteSearch {
         console.log(this.findFirstNode(messages));
     }
 
+    // region内の最初の検索ノード
     private findFirstNode(messages: MessageRegionType[]){
-        // regionIndexとchannelindexの最小値
-        const firstRegion = messages[0];
-        let firstNode = firstRegion.nodeInfo[0];
-        for (let i = 0; i < firstRegion.nodeInfo.length; i++){
-            if (firstNode.channelIndexes[0] > firstRegion.nodeInfo[i].channelIndexes[0]){
-                firstNode = firstRegion.nodeInfo[i];
-            }
-        }
-        return firstNode;
+        // regionIndexとchannelindexの最小値（上のチャンネルを優先）
+        const firstNode = messages[0].nodeInfo.sort((a, b) => (a.channelIndexes[0] - b.channelIndexes[0]));
+        return firstNode[0];
+    }
+
+    private optimizeSort(regions: MessageRegionType[]) {
+
     }
 }
