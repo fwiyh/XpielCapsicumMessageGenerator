@@ -13,6 +13,7 @@ import { Debug } from "./debug/Debug";
 
 import { RouteSearch } from "../libs/RouteSearch";
 import { LocationType } from "../types/position/LocationType";
+import { BuildMessage } from "../libs/BuildMessage";
 
 const messageContext = {
     // message config
@@ -30,55 +31,10 @@ const messageContext = {
     // position information
     positions: {} as PositionType,
     regionMessages: [] as MessageRegionType[],
+    // region-channel-nodeid based create message
     setLocation(regionIndex: number, channelIndex: number, location: LocationType) {
-        // 対象regionの取得
-        const targetRegion: MessageRegionType = messageContext.regionMessages.find(r => r.regionIndex == regionIndex) as MessageRegionType;
-        // 新規リージョン
-        if (targetRegion === undefined) {
-            const newNodeInfo: NodeInfoType = {
-                nodeId: location.id,
-                channelIndexes: [channelIndex],
-                nodeName: location.name,
-            }
-            const newRegionInfo: MessageRegionType = {
-                regionIndex: regionIndex,
-                nodeInfo: [newNodeInfo],
-                regionName: messageContext.positions.regions[regionIndex].name,
-            }
-            messageContext.regionMessages.push(newRegionInfo);
-            return;
-        }
-
-        // リージョン内ノードにチャンネルがある場合は削除
-        const existChannelInNode: NodeInfoType
-            = targetRegion.nodeInfo.find(n => {
-                                        return n.channelIndexes.indexOf(channelIndex) > -1;
-                                    }) as NodeInfoType;
-        // 既存チャンネルがある場合は置き換える
-        if (existChannelInNode !== undefined) {
-            const existChannelIndex: number = existChannelInNode.channelIndexes.indexOf(channelIndex);
-            if (existChannelIndex > -1) {
-                // あるものは消してソート
-                existChannelInNode.channelIndexes.splice(existChannelIndex, 1).sort();
-            }
-        }
-
-        // 削除した後にチャンネルを追加
-        const targetNodeInfo: NodeInfoType = targetRegion.nodeInfo.find(n => n.nodeId == location.id) as NodeInfoType;
-        // リージョン内新規ノード
-        if (targetNodeInfo === undefined) {
-            const newNodeInfo: NodeInfoType = {
-                nodeId: location.id,
-                channelIndexes: [channelIndex],
-                nodeName: location.name,
-            }
-            targetRegion.nodeInfo.push(newNodeInfo);
-            return;
-        } else {
-            // 更新後を追加してソート
-            targetNodeInfo.channelIndexes.push(channelIndex);
-            targetNodeInfo.channelIndexes.sort();
-        }
+        const buildMessage = new BuildMessage(messageContext.regionMessages, messageContext.positions, messageContext as ConfigurationType);
+        messageContext.regionMessages = buildMessage.getRegionMesages(regionIndex, channelIndex, location);
     },
     // resultMessage
     resultMessage: "" as string,
