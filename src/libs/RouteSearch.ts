@@ -181,7 +181,6 @@ export class RouteSearch {
                     } else {
                         // 直近チャンネルを先頭に移動
                         n.channelIndexes.splice(currentIndex, 1);
-                        console.log(n.channelIndexes);
                         n.channelIndexes.unshift(lastChannelIndex);
                         // 直前リージョンのチャンネルがある場合はこれを先頭にする
                     }
