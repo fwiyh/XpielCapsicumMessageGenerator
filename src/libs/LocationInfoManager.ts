@@ -5,43 +5,38 @@ import { PositionType } from "../types/position/PositionType";
 import { RouteSearch } from "./RouteSearch";
 import { ConfigurationType } from "../types/position/ConfigurationType";
 
-// message作成処理
-export class BuildMessage {
+/**
+ * ロケーション情報を管理する
+ */
+export class LocationInfoManager {
 	
 	private regionMessages: MessageRegionType[];
 	private positions: PositionType;
-	private configurations: ConfigurationType;
 		
-	constructor(regionMessages: MessageRegionType[], positions: PositionType, configurations: ConfigurationType){
+	constructor(regionMessages: MessageRegionType[], positions: PositionType) {
 		this.regionMessages = regionMessages;
 		this.positions = positions;
-		this.configurations = configurations;
 	}
 	
-	// setLocationのラッピング
+	/**
+     * ロケーション指定で実行されるイベント
+     * 
+     * @param regionIndex 
+     * @param channelIndex 
+     * @param location 
+     * @return this.regionMesages: MessageRegionType[]
+     */
 	getRegionMesages(regionIndex: number, channelIndex: number, location: LocationType) {
 		this.editRegionMessages(regionIndex, channelIndex, location);
 		return this.regionMessages;
 	}
-	
-	buildMessage(){
-		const routeSearch = new RouteSearch();
-        const resultMesages = routeSearch.buildMessage(this.regionMessages);
-        let retMsgs: string[] = [];
-        resultMesages?.forEach(r => {
-            const regionName = r.regionIndex;
-            let nodeMessages: string[] = [];
-            r.nodeInfos.forEach(n => {
-                nodeMessages.push(
-                    n.nodeId + 
-                    this.configurations.locationChannel + 
-                    n.channelIndexes.join(this.configurations.channel));
-            });
-            retMsgs.push(regionName + this.configurations.regionLocation + nodeMessages.join(this.configurations.location));
-        });
-        return retMsgs.join(this.configurations.regionJoin);
-	}
-	// regionMessagesの作成
+    
+	/**
+     * 出力用のメッセージを
+     * @param regionIndex 
+     * @param channelIndex 
+     * @param location 
+     */
 	private editRegionMessages(regionIndex: number, channelIndex: number, location: LocationType){
         // 対象regionの取得
         const targetRegion: MessageRegionType = this.regionMessages.find(r => r.regionIndex == regionIndex) as MessageRegionType;

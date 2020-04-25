@@ -168,7 +168,7 @@ export class RouteSearch {
      */
     private sortChannels(resultRegions: ResultRegionInfo[]){
         const firstRegionIndex = resultRegions[0].regionIndex;
-        let lastChannelIndex = resultRegions.slice(-1)[0].nodeInfos.slice(-1)[0].channelIndexes.slice(-1)[0];
+        let lastChannelIndex = resultRegions[0].nodeInfos.slice(-1)[0].channelIndexes.slice(-1)[0];
         const anotherRegionNodes = resultRegions.slice().filter(n => n.regionIndex != firstRegionIndex);
         anotherRegionNodes.forEach(r => {
             // 終端の場合は逆から実行

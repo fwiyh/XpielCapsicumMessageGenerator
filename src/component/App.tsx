@@ -8,12 +8,11 @@ import data from "../data/positions.json";
 import { Configurations } from "../data/Configurations";
 import { ConfigurationType } from "../types/position/ConfigurationType";
 import { MessageRegionType } from "../types/message/MessageRegionType";
-import { NodeInfoType } from "../types/message/NodeInfoType";
 import { Debug } from "./debug/Debug";
 
 import { RouteSearch } from "../libs/RouteSearch";
 import { LocationType } from "../types/position/LocationType";
-import { BuildMessage } from "../libs/BuildMessage";
+import { LocationInfoManager } from "../libs/LocationInfoManager";
 
 const messageContext = {
     // message config
@@ -31,9 +30,8 @@ const messageContext = {
     // position information
     positions: {} as PositionType,
     regionMessages: [] as MessageRegionType[],
-    // region-channel-nodeid based create message
     setLocation(regionIndex: number, channelIndex: number, location: LocationType) {
-        const buildMessage = new BuildMessage(messageContext.regionMessages, messageContext.positions, messageContext as ConfigurationType);
+        const buildMessage = new LocationInfoManager(messageContext.regionMessages, messageContext.positions);
         messageContext.regionMessages = buildMessage.getRegionMesages(regionIndex, channelIndex, location);
     },
     // resultMessage
