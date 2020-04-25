@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
 
 import { ConfigForm } from "./config/ConfigForm";
 import { Messages } from "./message/Messages";
@@ -33,6 +33,8 @@ const messageContext = {
     setLocation(regionIndex: number, channelIndex: number, location: LocationType) {
         const buildMessage = new LocationInfoManager(messageContext.regionMessages, messageContext.positions);
         messageContext.regionMessages = buildMessage.getRegionMesages(regionIndex, channelIndex, location);
+        messageContext.getContext();
+        console.log(messageContext.resultMessage);
     },
     // resultMessage
     resultMessage: "" as string,
@@ -60,13 +62,11 @@ export const Context = createContext(messageContext);
 export const App = () => {
     // configデータを設定
     for (const key in Configurations){
-        const k: keyof ConfigurationType = key as keyof ConfigurationType;
+        const k = key as keyof ConfigurationType;
         messageContext[k] = Configurations[k];
     }
     // contextにデータを追加
     messageContext.positions = data;
-
-    const [ resultMessage, setMessage ] = useState("");
 
     // 更新対象のリージョンを設定
     const regionIndexes: number[] = data.regions.map(r => r.index);
@@ -75,12 +75,18 @@ export const App = () => {
             <div className="container">
                 <form>
                     <Messages regionIndexes={...regionIndexes} />
-                    <div id="Message" className="row" style={{ height: "1.5rem" }}>{resultMessage}</div>
+                    {/* <div id="Message" className="row" style={{ height: "1.5rem" }}>{messageContext.resultMessage}</div> */}
+                    <Context.Consumer>
+                        {props => (
+                                <div id="Message" className="row" style={{ height: "1.5rem" }}>{props.resultMessage}</div>
+                            )
+                        }
+                    </Context.Consumer>
                     <div className="row">
                         <button type="button" id="ClipBoard" className="btn btn-primary">クリップボードにコピー</button>
                     </div>
                     <div className="row">
-                        <button type="button" onClick={() => {messageContext.getContext(); setMessage(messageContext.resultMessage);}} className="btn btn-primary">getContext</button>
+                        <button type="button" onClick={() => {console.log(messageContext.resultMessage);/*messageContext.getContext(); setMessage(messageContext.resultMessage);*/}} className="btn btn-primary">getContext</button>
                     </div>
                     <ConfigForm {...Configurations} />
                     <Debug />
