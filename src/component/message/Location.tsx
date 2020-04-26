@@ -13,7 +13,7 @@ type Param = {
 }
 
 export const Location = (params: Param) => {
-    const { setLocation } = useContext(Context);
+    const { setLocation, resultMessage } = useContext(Context);
     // region-channel-locationが１セットのデータを扱う
     // params.regionIndex, params.channelIndex, location
     return (
@@ -21,7 +21,7 @@ export const Location = (params: Param) => {
         onClick={() => {
             setLocation(params.regionIndex, params.channelIndex, params.location);
         }}
->
+        >
             <input 
                 type="radio" 
                 name={"Choise_Location_" + params.regionIndex + "_" + params.channelIndex}

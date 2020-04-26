@@ -2,8 +2,6 @@ import { LocationType } from "../types/position/LocationType";
 import { MessageRegionType } from "../types/message/MessageRegionType";
 import { NodeInfoType } from "../types/message/NodeInfoType";
 import { PositionType } from "../types/position/PositionType";
-import { RouteSearch } from "./RouteSearch";
-import { ConfigurationType } from "../types/position/ConfigurationType";
 
 /**
  * ロケーション情報を管理する

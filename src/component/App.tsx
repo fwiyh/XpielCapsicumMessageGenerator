@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
 
 import { ConfigForm } from "./config/ConfigForm";
 import { Messages } from "./message/Messages";
@@ -68,6 +68,8 @@ export const App = () => {
     // contextにデータを追加
     messageContext.positions = data;
 
+    const [ resultMessage, setResultMessage ] = useState("");
+
     // 更新対象のリージョンを設定
     const regionIndexes: number[] = data.regions.map(r => r.index);
     return (
@@ -75,18 +77,12 @@ export const App = () => {
             <div className="container">
                 <form>
                     <Messages regionIndexes={...regionIndexes} />
-                    {/* <div id="Message" className="row" style={{ height: "1.5rem" }}>{messageContext.resultMessage}</div> */}
-                    <Context.Consumer>
-                        {props => (
-                                <div id="Message" className="row" style={{ height: "1.5rem" }}>{props.resultMessage}</div>
-                            )
-                        }
-                    </Context.Consumer>
+                    <div id="Message" className="row" style={{ height: "1.5rem" }}>{resultMessage}</div>
                     <div className="row">
                         <button type="button" id="ClipBoard" className="btn btn-primary">クリップボードにコピー</button>
                     </div>
                     <div className="row">
-                        <button type="button" onClick={() => {console.log(messageContext.resultMessage);/*messageContext.getContext(); setMessage(messageContext.resultMessage);*/}} className="btn btn-primary">getContext</button>
+                        <button type="button" onClick={() => {setResultMessage(messageContext.resultMessage);}} className="btn btn-primary">getContext</button>
                     </div>
                     <ConfigForm {...Configurations} />
                     <Debug />

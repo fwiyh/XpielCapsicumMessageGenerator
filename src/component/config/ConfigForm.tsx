@@ -6,7 +6,7 @@ import { ConfigurationType } from "../../types/position/ConfigurationType";
 
 export const ConfigForm = (param: ConfigurationType) => {
 
-    const [displayMode, setDisplay ] = useState("none");
+    const [ displayMode, setDisplay ] = useState("none");
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
