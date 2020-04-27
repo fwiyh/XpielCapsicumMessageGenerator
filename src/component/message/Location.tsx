@@ -13,13 +13,14 @@ type Param = {
 }
 
 export const Location = (params: Param) => {
-    const { setLocation } = useContext(Context);
+    const { putLocation, setResultMessage } = useContext(Context);
     // region-channel-locationが１セットのデータを扱う
     // params.regionIndex, params.channelIndex, location
     return (
         <label className="btn btn-info"
         onClick={() => {
-            setLocation(params.regionIndex, params.channelIndex, params.location);
+            const resultMessage2 = putLocation(params.regionIndex, params.channelIndex, params.location);
+            setResultMessage(resultMessage2);
         }}
         >
             <input 

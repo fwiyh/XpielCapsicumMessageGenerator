@@ -13,7 +13,7 @@ const dijkstra = new Dijkstra();
  */
 export const routeSearch = (regionMessages: MessageRegionType[]) => {
     if (regionMessages.length == 0){
-        return;
+        return regionMessages;
     }
     // リージョン・チャンネルのソート
     const messages: MessageRegionType[] = lodash.cloneDeep(regionMessages);

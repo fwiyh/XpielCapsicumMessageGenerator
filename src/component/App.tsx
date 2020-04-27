@@ -34,11 +34,14 @@ const messageContext = {
     regionMessages: [] as MessageRegionType[],
     // resultMessage 
     resultMessage: "" as string,
-    setLocation(regionIndex: number, channelIndex: number, location: LocationType) {
+    // regionMessagesに値を設定する
+    putLocation(regionIndex: number, channelIndex: number, location: LocationType) {
         setLocation(messageContext.regionMessages, messageContext.positions, regionIndex, channelIndex, location);
-        const resultMesages = routeSearch(messageContext.regionMessages) as MessageRegionType[];
-        messageContext.resultMessage = buildMessage(resultMesages, messageContext, messageContext.positions);
+        const resultMesages = routeSearch(messageContext.regionMessages);
+        return buildMessage(resultMesages, messageContext, messageContext.positions);
     },
+    // setState用の関数
+    setResultMessage: {} as Dispatch<SetStateAction<string>>,
 }
 export const Context = createContext(messageContext);
 
@@ -51,7 +54,9 @@ export const App = () => {
     // contextにデータを追加
     messageContext.positions = data;
 
+    // メッセージ出力の処理をcontextに設定
     const [ resultMessage, setResultMessage ] = useState("");
+    messageContext.setResultMessage = setResultMessage;
 
     // 更新対象のリージョンを設定
     const regionIndexes: number[] = data.regions.map(r => r.index);
