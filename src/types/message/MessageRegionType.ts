@@ -6,7 +6,4 @@ export type MessageRegionType = {
     regionIndex: number;
     // locationId in region
     nodeInfo: NodeInfoType[];
-
-    // view label
-    regionName: string;
 }

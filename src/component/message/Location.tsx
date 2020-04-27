@@ -13,7 +13,7 @@ type Param = {
 }
 
 export const Location = (params: Param) => {
-    const { setLocation, resultMessage } = useContext(Context);
+    const { setLocation } = useContext(Context);
     // region-channel-locationが１セットのデータを扱う
     // params.regionIndex, params.channelIndex, location
     return (
