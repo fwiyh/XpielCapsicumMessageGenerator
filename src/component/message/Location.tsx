@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Context } from "../App";
 
-import { Location as LocationType } from "../../entity/LocationEntity";
+import { LocationType } from "../../types/position/LocationType";
 
 type Param = {
     // Region Index

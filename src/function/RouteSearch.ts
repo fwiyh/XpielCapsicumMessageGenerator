@@ -1,6 +1,6 @@
 import lodash from "lodash";
 
-import { Dijkstra } from "../libs/dijkstra";
+import { Dijkstra } from "../lib/dijkstra";
 
 import { MessageRegionType } from "../types/message/MessageRegionType";
 import { NodeInfoType } from "../types/message/NodeInfoType";

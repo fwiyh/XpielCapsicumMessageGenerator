@@ -1,36 +1,38 @@
 import React, { useContext } from "react";
 
-import { Context } from "../App";
+import { DebugContext } from "./Debug";
 
 type ParamType = {
-    defaultIndex: number;
+    stateName: string,
+    defaultIndex: number,
+    // availableNodeInfo: AvailableNodeInfo[],
 }
 
 export const NodeList = (params: ParamType) => {
 
-    const { positions } = useContext(Context);
+    // デバッグの設定値
+    const { setConfig, availableNodeInfo } = useContext(DebugContext);
 
     const locations: JSX.Element[] = [];
     let defaultValue = "";
-    
-    // node取得
-    for (let i = 0; i < positions.regions.length; i++){
-        const region = positions.regions[i];
-        for (let j = 0; j < region.locations.length; j++){
-            const location = region.locations[j];
-            if (i * (region.locations.length -1) + j == params.defaultIndex){
-                defaultValue = location.id;
-            }
-            locations.push(
-                <option 
-                    key={location.id + region.name + location.name}
-                    value={location.id}
-                >
-                    {location.id}:{region.name}{location.name}
-                </option>
-            );
+
+    // 各regionのnode取得
+    for (let i = 0; i < availableNodeInfo.length; i++){
+        const node = availableNodeInfo[i];
+        // 初期値の設定
+        if (i == params.defaultIndex){
+            defaultValue = node.nodeId;
         }
+        locations.push(
+            <option 
+                key={node.nodeId + node.regionName + node.nodeName}
+                value={node.nodeId}
+            >
+                {node.nodeId}:{node.regionName}{node.nodeName}
+            </option>
+        );
     }
+    setConfig(params.stateName, defaultValue);
 
     return (
         <select className="custom-select" defaultValue={defaultValue}>

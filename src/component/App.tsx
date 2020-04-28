@@ -10,10 +10,10 @@ import { ConfigurationType } from "../types/position/ConfigurationType";
 import { MessageRegionType } from "../types/message/MessageRegionType";
 import { Debug } from "./debug/Debug";
 
-import { routeSearch } from "../libs/RouteSearch";
+import { routeSearch } from "../function/RouteSearch";
 import { LocationType } from "../types/position/LocationType";
-import { setLocation } from "../libs/SetLocation";
-import { buildMessage } from "../libs/BuildMessage";
+import { setLocation } from "../function/SetLocation";
+import { buildMessage } from "../function/BuildMessage";
 
 const messageContext = {
     // message config
@@ -24,7 +24,7 @@ const messageContext = {
     regionJoin: "" as string,
     setConfig(key: string, value: string){
         if (key in messageContext){
-            const k: keyof ConfigurationType = key as keyof ConfigurationType;
+            const k = key as keyof ConfigurationType;
             messageContext[k] = value;
         }
     },
@@ -68,9 +68,6 @@ export const App = () => {
                     <div id="Message" className="row" style={{ height: "1.5rem" }}>{resultMessage}</div>
                     <div className="row">
                         <button type="button" id="ClipBoard" onClick={() => {copyToClipboard(); }} className="btn btn-primary">クリップボードにコピー</button>
-                    </div>
-                    <div className="row">
-                        <button type="button" onClick={() => {setResultMessage(messageContext.resultMessage);}} className="btn btn-primary">getContext</button>
                     </div>
                     <ConfigForm {...Configurations} />
                     <Debug />

@@ -1,7 +1,7 @@
 import * as data from "../data/positions.json";
-import { DNode } from "../entity/DNodeEntity";
-import { DEdge } from "../entity/DEdgeEntity";
-import { CalculatedNode } from "../entity/CalculatedNodeEntity";
+import { DNode } from "./entity/DNodeEntity";
+import { DEdge } from "./entity/DEdgeEntity";
+import { CalculatedNode } from "./entity/CalculatedNodeEntity";
 import lodash from "lodash";
 
 export class Dijkstra {
