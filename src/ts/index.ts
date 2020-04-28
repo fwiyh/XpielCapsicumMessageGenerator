@@ -229,6 +229,8 @@ class LocationBuilder {
 				const channelIndex: number = <number>$(this).parent().parent().find("input[id^=LocationIndex_]").val();
 				// 対象チャンネルのソート順
 				const nodeId: string = <string>$(this).parent().find("input[id^=ChoiceRadio_]").val();
+				// node index
+				const nodeIndex: number = <number>$(this).parent().parent().find("input[id^=LocationIndex_]").val();
 
 				// 取り扱うチャンネルのメッセージ情報
 				const targetRegion: NodeInfo[] = regions[currentRegionIndex].nodeInfo;
@@ -238,7 +240,7 @@ class LocationBuilder {
 				if (msgIndex > -1) {
 					regions[currentRegionIndex].nodeInfo[msgIndex].channelIndexes.push(channelIndex);
 				} else {
-					const posInfo = new NodeInfo(nodeId, [channelIndex]);
+					const posInfo = new NodeInfo(nodeId, [channelIndex], nodeIndex);
 					regions[currentRegionIndex].nodeInfo.push(posInfo);
 				}
 			}
@@ -257,6 +259,8 @@ class LocationBuilder {
 
 		// 前リージョンの最終チャンネル
 		let previousRegionChannelIndex = -1;
+		// 初回の末端判定
+		let isEnd = false;
 		
 		regions.forEach(r => {
 			// リージョン単位で設定する出力メッセージ
@@ -270,9 +274,11 @@ class LocationBuilder {
 			while (tmpMessages.length > 0) {
 				// メッセージ内で最もchannelIndexの小さいものを取得
 				const availableNode = tmpMessages.map(p => p.nodeId);
-				targetNodeId = this.findNextNodeId(targetNodeId, availableNode, tmpMessages, previousRegionChannelIndex);
+				targetNodeId = this.findNextNodeId(targetNodeId, availableNode, tmpMessages, previousRegionChannelIndex, isEnd);
 				// メッセージ作成処理
 				this.buildNodeMessage(tmpMessages, retMsgs, targetNodeId, previousRegionChannelIndex);
+				// 末端判定
+				isEnd = (tmpMessages.find(n => n.nodeId == targetNodeId)?.nodeIndex == 0 || tmpMessages.find(n => n.nodeId == targetNodeId)?.nodeIndex == r.nodeInfo.length -1);
 				// 削除前に直前の最終チャンネルを取得
 				lastChannelIndex = tmpMessages.slice(-1)[0].channelIndexes.slice(-1)[0];
 				// 処理後の配列を削除
@@ -291,9 +297,9 @@ class LocationBuilder {
 	 * @param nodes 
 	 * @param tmpMessages 
 	 * @param lastChannelIndex 
-	 * @param isFirstRegion 
+	 * @param isEnd 
 	 */
-	private findNextNodeId(previousNodeId: string, nodes: string[], tmpMessages: NodeInfo[], lastChannelIndex: number) {
+	private findNextNodeId(previousNodeId: string, nodes: string[], tmpMessages: NodeInfo[], lastChannelIndex: number, isEnd: boolean) {
 		let nextNodeId = "";
 		// 初回の場合は起点計算
 		if (previousNodeId == "") {
@@ -313,10 +319,15 @@ class LocationBuilder {
 					nextNodeId = nextNodes[0].nodeId;
 					break;
 				default:
-					const firstChannels: number[] = <number[]>tmpMessages.find(p => p.nodeId == nextNodes[0].nodeId)?.channelIndexes;
-					const secondChannels: number[] = <number[]>tmpMessages.find(p => p.nodeId == nextNodes[1].nodeId)?.channelIndexes;
-					// 2番目のノードのチャンネル数が多い場合のみ2番目を選択する
-					nextNodeId = firstChannels?.length >= secondChannels?.length ? nextNodes[0].nodeId : nextNodes[1].nodeId
+					// 末端スタートの場合は無条件で隣接
+					if (isEnd){
+						nextNodeId = nextNodes[0].nodeId;
+					} else {
+						const firstChannels: number[] = <number[]>tmpMessages.find(p => p.nodeId == nextNodes[0].nodeId)?.channelIndexes;
+						const secondChannels: number[] = <number[]>tmpMessages.find(p => p.nodeId == nextNodes[1].nodeId)?.channelIndexes;
+						// 2番目のノードのチャンネル数が多い場合のみ2番目を選択する
+						nextNodeId = firstChannels?.length >= secondChannels?.length ? nextNodes[0].nodeId : nextNodes[1].nodeId
+					}
 					break;
 			}
 		} else {
@@ -409,9 +420,12 @@ class NodeInfo {
 	nodeId: string;
 	// チャンネルindex
 	channelIndexes: number[];
+	// node index
+	nodeIndex: number;
 
-	constructor(nodeId: string, channelIndexes: number[]) {
+	constructor(nodeId: string, channelIndexes: number[], nodeIndex: number) {
 		this.nodeId = nodeId;
 		this.channelIndexes = channelIndexes;
+		this.nodeIndex = nodeIndex;
 	}
 }
