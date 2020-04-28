@@ -20,6 +20,8 @@ export const setLocation = (
         const newNodeInfo: NodeInfoType = {
             nodeId: location.id,
             channelIndexes: [channelIndex],
+            nodeIndex: location.index,
+            
         }
         const newRegionInfo: MessageRegionType = {
             regionIndex: regionIndex,
@@ -50,6 +52,7 @@ export const setLocation = (
         const newNodeInfo: NodeInfoType = {
             nodeId: location.id,
             channelIndexes: [channelIndex],
+            nodeIndex: location.index,
         }
         targetRegion.nodeInfo.push(newNodeInfo);
         return;

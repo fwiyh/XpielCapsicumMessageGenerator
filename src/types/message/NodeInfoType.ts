@@ -4,4 +4,6 @@ export type NodeInfoType = {
 	nodeId: string;
 	// channel index
 	channelIndexes: number[];
+	// node index
+	nodeIndex: number;
 }

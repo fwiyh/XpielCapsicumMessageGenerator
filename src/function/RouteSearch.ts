@@ -29,7 +29,7 @@ export const routeSearch = (regionMessages: MessageRegionType[]) => {
 
 /**
  * ソート
- * @param regions リージョンindex順・nodeInfoはすべてチャンネルがあろデータ
+ * @param regions リージョンindex順・nodeInfoはすべてチャンネルがあるデータ
  */
 const optimizeSort = (regions: MessageRegionType[]) => {
     const resultRegions: MessageRegionType[] = [];
@@ -41,6 +41,7 @@ const optimizeSort = (regions: MessageRegionType[]) => {
     let lastChannelIndex: number = -1;
 
     let isFirstRegion = true;
+    let isEnd = false;
 
     regions.forEach(r => {
         const resultNodes: NodeInfoType[] = [];
@@ -51,15 +52,18 @@ const optimizeSort = (regions: MessageRegionType[]) => {
                     resultNodes.push({
                         nodeId: firstNode.nodeId,
                         channelIndexes: firstNode.channelIndexes,
+                        nodeIndex: firstNode.nodeIndex,
                     });
                     // 直前情報
                     previonsNodeId = firstNode.nodeId;
                     lastChannelIndex = firstNode.channelIndexes.slice(-1)[0];
+                    // 末端判定
+                    isEnd = (firstNode.nodeIndex == 0 || firstNode.nodeIndex == r.nodeInfo.length -1);
                     // 対象ノードを選択肢から外す
                     const deleteNodeIndex =  r.nodeInfo.findIndex(n => n.nodeId == previonsNodeId);
                     r.nodeInfo.splice(deleteNodeIndex, 1);
                 } else {
-                    const nextNodes = findNextNodeInRegion(previonsNodeId, r.nodeInfo);
+                    const nextNodes = findNextNodeInRegion(previonsNodeId, r.nodeInfo, isEnd);
                     let targetNode: NodeInfoType;
                     let deleteNodeIndex: number;
                     // チャンネル数の比較
@@ -72,6 +76,7 @@ const optimizeSort = (regions: MessageRegionType[]) => {
                             resultNodes.push({
                                 nodeId: previonsNodeId,
                                 channelIndexes: targetNode.channelIndexes ?? [],
+                                nodeIndex: firstNode.nodeIndex,
                             });
                             lastChannelIndex = targetNode.channelIndexes[targetNode.channelIndexes.length-1];
                             // 対象ノードを選択肢から外す
@@ -87,6 +92,7 @@ const optimizeSort = (regions: MessageRegionType[]) => {
                             resultNodes.push({
                                 nodeId: previonsNodeId,
                                 channelIndexes: targetNode.channelIndexes ?? [],
+                                nodeIndex: firstNode.nodeIndex,
                             });
                             lastChannelIndex = targetNode.channelIndexes[targetNode.channelIndexes.length-1];
                             // 対象ノードを選択肢から外す
@@ -101,6 +107,7 @@ const optimizeSort = (regions: MessageRegionType[]) => {
                 resultNodes.push({
                     nodeId: nextNode.nodeId,
                     channelIndexes: r.nodeInfo.find(n => n.nodeId == nextNode.nodeId)?.channelIndexes ?? [],
+                    nodeIndex: firstNode.nodeIndex,
                 });
                 previonsNodeId = nextNode.nodeId;
                 // 対象ノードを選択肢から外す
@@ -127,12 +134,18 @@ const findFirstNode = (messages: MessageRegionType[]) => {
 /**
  * 同じリージョン内の次のノードを検索
  * @param previousNodeId 
- * @param targetNodes 
- * @param tmpMessages 
+ * @param remainingNodes 
+ * @param isEnd 
  */
-const findNextNodeInRegion = (previousNodeId: string, remainingNodes: NodeInfoType[]) => {
+const findNextNodeInRegion = (previousNodeId: string, remainingNodes: NodeInfoType[], isEnd: boolean) => {
     const remainingNodeIds: string[] = remainingNodes.map(n => n.nodeId);
-    const nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, remainingNodeIds, remainingNodes.length);
+    let nextNodes;
+    // 末端の場合は隣接指定
+    if (isEnd) {
+        nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, remainingNodeIds, 1);
+    } else {
+        nextNodes = dijkstra.calcTop_N_Nodes(previousNodeId, remainingNodeIds, remainingNodes.length);
+    }
     return nextNodes;
 }
 
