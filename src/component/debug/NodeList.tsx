@@ -5,7 +5,6 @@ import { DebugContext } from "./Debug";
 type ParamType = {
     stateName: string,
     defaultIndex: number,
-    // availableNodeInfo: AvailableNodeInfo[],
 }
 
 export const NodeList = (params: ParamType) => {
@@ -35,7 +34,10 @@ export const NodeList = (params: ParamType) => {
     setConfig(params.stateName, defaultValue);
 
     return (
-        <select className="custom-select" defaultValue={defaultValue}>
+        <select 
+            className="custom-select" defaultValue={defaultValue}
+            onChange={(e) => {setConfig(params.stateName, e.target.value)}}
+        >
             ${locations}
         </select>
     )

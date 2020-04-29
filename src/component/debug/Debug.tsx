@@ -120,6 +120,8 @@ export const Debug = () => {
                     type="button" 
                     className="btn btn-secondary"
                     onClick={() => { 
+                        console.log(debugContext.debugRouteSearchFrom);
+                        console.log(debugContext.debugRouteSearchTo);
                         const result = debugRouteSearch(debugContext.debugRouteSearchFrom, debugContext.debugRouteSearchTo); 
                         setDebugRouteSearchResult(result);
                     }}    
