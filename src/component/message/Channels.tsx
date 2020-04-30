@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Location } from "./Location";
 
 import { Context } from "../App";
@@ -16,6 +16,9 @@ export const Channels = (params: ParamType) => {
 
     const { positions } = useContext(Context);
 
+    // checkedボタンの指定
+    const [ checked, setChecked ] = useState("");
+
     // index順にソート
     const regionLocations = positions.regions[params.regionIndex].locations.sort((a, b) => a.index - b.index);
 
@@ -30,6 +33,8 @@ export const Channels = (params: ParamType) => {
                 regionIndex={params.regionIndex} 
                 channelIndex={params.channelIndex} 
                 location={locationData} 
+                setChecked={setChecked}
+                checked={checked}
             />
         );
     }
