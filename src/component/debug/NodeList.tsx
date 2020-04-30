@@ -36,7 +36,7 @@ export const NodeList = (params: ParamType) => {
     return (
         <select 
             className="custom-select" defaultValue={defaultValue}
-            onChange={(e) => {setConfig(params.stateName, e.target.value)}}
+            onChange={(e) => setConfig(params.stateName, e.target.value)}
         >
             ${locations}
         </select>

@@ -12,12 +12,14 @@ type DebugContextType = {
     debugRouteSearchTo: string,
     debugSearchMinimumCostNode: string,
     debugStartNNode: string,
+    numberOfNodes: string,
 }
 const debugContext = {
     debugRouteSearchFrom: "" as string,
     debugRouteSearchTo: "" as string,
     debugSearchMinimumCostNode: "" as string,
     debugStartNNode: "" as string,
+    numberOfNodes: "2" as string,
     availableNodeInfo: [] as AvailableNodeInfo[],
 
     setConfig(key: string, value: string){
@@ -25,7 +27,7 @@ const debugContext = {
             const k = key as keyof DebugContextType;
             debugContext[k] = value;
         }
-    },    
+    },
 }
 export const DebugContext = createContext(debugContext);
 
@@ -58,32 +60,28 @@ export const Debug = () => {
     
     // state
     const [ debugRouteSearchResult, setDebugRouteSearchResult ] = useState(<></>);
-    const [ numberOfNodes, setNumberOfNodes ] = useState("2");
 
     // findNode
     const debugRouteSearch = (start: string, goal: string) => {
         const minCostNode = dijkstra.findNode(start, goal);
-        console.log("minRoute: " + minCostNode.minRoute.toString() + "\nminCost: " + minCostNode.minCost);
         return (
-            <div>
+            <>
                 <div>{"minRoute: " + minCostNode.minRoute.toString()}</div>
                 <div>{"minCost: " + minCostNode.minCost}</div>
-            </div>
+            </>
         )
     }
     // calcEachNodes
     const debugEachNodes = (debugSearchMinimumCostNode: string) => {
-        const nodes = nodeList.map(n => n.nodeId).filter(n => n != debugSearchMinimumCostNode);
+        const nodes = nodeList.slice().map(n => n.nodeId).filter(n => n != debugSearchMinimumCostNode);
         const minCostNode = dijkstra.calcEachNodes(debugSearchMinimumCostNode, nodes);
-        console.log("minRoute: " + minCostNode.minRoute.toString() + "\nminCost: " + minCostNode.minCost);
         return (
-            <div>
+            <>
                 <div>{"minRoute: " + minCostNode.minRoute.toString()}</div>
                 <div>{"minCost: " + minCostNode.minCost}</div>
-            </div>
+            </>
         )
     }
-    // calcTop_N_Nodes
     const debugCalcTopNNodes = (start: string, n: string) => {
         const num = parseInt(n) ?? 2;
         const nodes = nodeList.map(n => n.nodeId).filter(n => n != start);
@@ -102,66 +100,65 @@ export const Debug = () => {
                 </div>
             );
         }
-        console.log(result);
         return (
-            <div>
+            <>
                 {resultJsx}
-            </div>
+            </>
         );
     }
 
     return (
-        <>
-        <div className="row">
-            <div className="col-4">
-                <NodeList stateName={"debugRouteSearchFrom"} defaultIndex={0} />
-                <NodeList stateName={"debugRouteSearchTo"} defaultIndex={2} />
-                <button 
-                    type="button" 
-                    className="btn btn-secondary"
-                    onClick={() => { 
-                        console.log(debugContext.debugRouteSearchFrom);
-                        console.log(debugContext.debugRouteSearchTo);
-                        const result = debugRouteSearch(debugContext.debugRouteSearchFrom, debugContext.debugRouteSearchTo); 
-                        setDebugRouteSearchResult(result);
-                    }}    
-                >
-                    経路計算
-                </button>
+        <DebugContext.Provider value={debugContext}>
+            <div className="row">
+                <div className="col-4">
+                    <NodeList stateName={"debugRouteSearchFrom"} defaultIndex={0} />
+                    <NodeList stateName={"debugRouteSearchTo"} defaultIndex={2} />
+                    <button 
+                        type="button" 
+                        className="btn btn-secondary"
+                        onClick={() => { 
+                            const result = debugRouteSearch(debugContext.debugRouteSearchFrom, debugContext.debugRouteSearchTo); 
+                            setDebugRouteSearchResult(result);
+                        }}    
+                    >
+                        経路計算
+                    </button>
+                </div>
+                <div className="col-4">
+                    <NodeList stateName={"debugSearchMinimumCostNode"} defaultIndex={0} />
+                    <button 
+                        type="button" 
+                        className="btn btn-secondary"
+                        onClick={() => { 
+                            const result = debugEachNodes(debugContext.debugSearchMinimumCostNode);
+                            setDebugRouteSearchResult(result);
+                        }}    
+                    >
+                        最小コストのノード検索
+                    </button>
+                </div>
+                <div className="col-4">
+                    起点ノード
+                    <NodeList stateName={"debugStartNNode"} defaultIndex={0} />
+                    隣接n件
+                    <input type="number" className="form-control" defaultValue="2" onChange={(e) => debugContext.setConfig("numberOfNodes", e.target.value)} />
+                    <button 
+                        type="button" 
+                        className="btn btn-secondary"
+                        onClick={() => {
+                            console.log();
+                            console.log(debugContext.debugStartNNode);
+                            const result = debugCalcTopNNodes(debugContext.debugStartNNode, debugContext.numberOfNodes);
+                            setDebugRouteSearchResult(result);
+                        }}    
+                    >
+                        隣接N件経路計算
+                    </button>
+                </div>
             </div>
-            <div className="col-4">
-                <NodeList stateName={"debugSearchMinimumCostNode"} defaultIndex={0} />
-                <button 
-                    type="button" 
-                    className="btn btn-secondary"
-                    onClick={() => { 
-                        const result = debugEachNodes(debugContext.debugSearchMinimumCostNode);
-                        setDebugRouteSearchResult(result);
-                    }}    
-                >
-                    最小コストのノード検索
-                </button>
+            <div className="row">
+                <div key={"debug_route_search_result"}>{debugRouteSearchResult}</div>
             </div>
-            <div className="col-4">
-                起点ノード
-                <NodeList stateName={"debugStartNNode"} defaultIndex={0} />
-                隣接n件
-                <input type="text" className="form-control" defaultValue="2" onChange={(e) => setNumberOfNodes(e.target.value)} />
-                <button 
-                    type="button" 
-                    className="btn btn-secondary"
-                    onClick={() => {
-                        const result = debugCalcTopNNodes(debugContext.debugSearchMinimumCostNode, numberOfNodes);
-                        setDebugRouteSearchResult(result);
-                    }}    
-                >
-                    隣接N件経路計算
-                </button>
-            </div>
-        </div>
-        <div className="row">
-            <div key={"debug_route_search_result"}>{debugRouteSearchResult}</div>
-        </div>
-        </>
+        </DebugContext.Provider>
     )
 }
