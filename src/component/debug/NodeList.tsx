@@ -31,7 +31,7 @@ export const NodeList = (params: ParamType) => {
             </option>
         );
     }
-    setConfig(params.stateName, defaultValue);
+    // setConfig(params.stateName, defaultValue);
 
     return (
         <select 

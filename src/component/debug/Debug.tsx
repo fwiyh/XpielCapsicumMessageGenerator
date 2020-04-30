@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 
 import { Context } from "../App";
 import { NodeList } from "./NodeList";
@@ -12,14 +12,13 @@ type DebugContextType = {
     debugRouteSearchTo: string,
     debugSearchMinimumCostNode: string,
     debugStartNNode: string,
-    numberOfNodes: string,
 }
 const debugContext = {
-    debugRouteSearchFrom: "" as string,
-    debugRouteSearchTo: "" as string,
-    debugSearchMinimumCostNode: "" as string,
-    debugStartNNode: "" as string,
-    numberOfNodes: "2" as string,
+    debugRouteSearchFrom: "5x5o" as string,
+    debugRouteSearchTo: "iq0x" as string,
+    debugSearchMinimumCostNode: "5x5o" as string,
+    debugStartNNode: "5x5o" as string,
+
     availableNodeInfo: [] as AvailableNodeInfo[],
 
     setConfig(key: string, value: string){
@@ -60,6 +59,7 @@ export const Debug = () => {
     
     // state
     const [ debugRouteSearchResult, setDebugRouteSearchResult ] = useState(<></>);
+    const [ numberOfNode, setNumberOfNode ] = useState("2");
 
     // findNode
     const debugRouteSearch = (start: string, goal: string) => {
@@ -141,20 +141,21 @@ export const Debug = () => {
                     起点ノード
                     <NodeList stateName={"debugStartNNode"} defaultIndex={0} />
                     隣接n件
-                    <input type="number" className="form-control" defaultValue="2" onChange={(e) => debugContext.setConfig("numberOfNodes", e.target.value)} />
+                    <input type="number" className="form-control" defaultValue={numberOfNode} onChange={(e) => setNumberOfNode(e.target.value)} />
                     <button 
                         type="button" 
                         className="btn btn-secondary"
                         onClick={() => {
-                            console.log();
-                            console.log(debugContext.debugStartNNode);
-                            const result = debugCalcTopNNodes(debugContext.debugStartNNode, debugContext.numberOfNodes);
+                            const result = debugCalcTopNNodes(debugContext.debugStartNNode, numberOfNode);
                             setDebugRouteSearchResult(result);
                         }}    
                     >
                         隣接N件経路計算
                     </button>
                 </div>
+            </div>
+            <div>
+                <button type="button" onClick={() => console.log(debugContext)}>context</button>
             </div>
             <div className="row">
                 <div key={"debug_route_search_result"}>{debugRouteSearchResult}</div>
