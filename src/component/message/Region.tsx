@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 
 import { Channels } from "./Channels";
 import { Context } from "../App";
@@ -8,10 +8,10 @@ type ParamType = {
     index: number,
 }
 
-export const Region = (params: ParamType) => {
+export const Region = memo((params: ParamType) => {
 
     const { positions } = useContext(Context);
-
+console.log("Region " + params.index);
     const channelElemets: JSX.Element[] = [];
     // Region内チャンネルすべてにlocationを設定する
     for (let i = 0; i < positions.channels.length; i++){
@@ -31,4 +31,4 @@ export const Region = (params: ParamType) => {
             {channelElemets}
         </>
     )
-}
+});

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, memo, useCallback } from "react";
 import { Location } from "./Location";
 
 import { Context } from "../App";
@@ -12,7 +12,7 @@ type ParamType = {
     channelIndex: number,
 }
 
-export const Channels = (params: ParamType) => {
+export const Channels = memo((params: ParamType) => {
 
     const { positions } = useContext(Context);
 
@@ -21,6 +21,7 @@ export const Channels = (params: ParamType) => {
 
     // index順にソート
     const regionLocations = positions.regions[params.regionIndex].locations.sort((a, b) => a.index - b.index);
+    // console.log("Channels " + params.regionIndex + "_" + params.channelIndex + " checked: " + checked);
 
     // ここからregions.locationsの中身すべてを設定
     const locations: JSX.Element[] = [];
@@ -29,7 +30,7 @@ export const Channels = (params: ParamType) => {
         const locationData: LocationType = regionLocations[i];
         locations.push(
             <Location 
-                key={"Block_Channel_Location__" + params.regionIndex + "_" + params.channelIndex + "_" + i} 
+                key={"Block_Channel_Location_" + params.regionIndex + "_" + params.channelIndex + "_" + i} 
                 regionIndex={params.regionIndex} 
                 channelIndex={params.channelIndex} 
                 location={locationData} 
@@ -45,4 +46,4 @@ export const Channels = (params: ParamType) => {
             {locations}
         </>
     )
-}
+});

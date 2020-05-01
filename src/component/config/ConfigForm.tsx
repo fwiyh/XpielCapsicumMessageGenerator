@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 
 import { ConfigText } from "./ConfigText";
 
 import { ConfigurationType } from "../../types/position/ConfigurationType";
 
-export const ConfigForm = (param: ConfigurationType) => {
+export const ConfigForm = memo((param: ConfigurationType) => {
 
     const [ displayMode, setDisplay ] = useState("none");
 
     useEffect(() => {
+        // キーダウンイベント
         const onKeyDown = (event: KeyboardEvent) => {
-            // ctrl + shift + c
-            if (event.ctrlKey && event.shiftKey && event.keyCode == 67) {
+            // ctrl + altKey + c
+            if (event.ctrlKey && event.altKey && event.keyCode == 67) {
                 const newDisplay = displayMode == "none" ? "block" : "none";
                 setDisplay(newDisplay);
             }
         }
         window.addEventListener("keydown", onKeyDown);
-    });
+        // returnでイベントを削除
+        return () => {
+            window.removeEventListener("keydown", onKeyDown);
+        }
+    }, [displayMode]);
 
     return (
         <div id="Config" className="row" style={{display: displayMode}}>
@@ -48,4 +53,4 @@ export const ConfigForm = (param: ConfigurationType) => {
             />
         </div>
     );
-}
+});

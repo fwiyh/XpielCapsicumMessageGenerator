@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, memo } from "react";
 
 import { Context } from "../App";
 import { NodeList } from "./NodeList";
@@ -14,10 +14,10 @@ type DebugContextType = {
     debugStartNNode: string,
 }
 const debugContext = {
-    debugRouteSearchFrom: "5x5o" as string,
-    debugRouteSearchTo: "iq0x" as string,
-    debugSearchMinimumCostNode: "5x5o" as string,
-    debugStartNNode: "5x5o" as string,
+    debugRouteSearchFrom: "" as string,
+    debugRouteSearchTo: "" as string,
+    debugSearchMinimumCostNode: "" as string,
+    debugStartNNode: "" as string,
 
     availableNodeInfo: [] as AvailableNodeInfo[],
 
@@ -30,13 +30,13 @@ const debugContext = {
 }
 export const DebugContext = createContext(debugContext);
 
-export const Debug = () => {
+export const Debug = memo(() => {
     // 自身のファイル名
     const uriFileName = location.href.split("/").pop();
     if (uriFileName != "debug.html"){
         return(<></>)
     }
-
+    
     // 経路計算クラス
     const dijkstra = new Dijkstra();
 
@@ -162,4 +162,4 @@ export const Debug = () => {
             </div>
         </DebugContext.Provider>
     )
-}
+});

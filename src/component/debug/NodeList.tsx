@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 
 import { DebugContext } from "./Debug";
 
@@ -7,7 +7,7 @@ type ParamType = {
     defaultIndex: number,
 }
 
-export const NodeList = (params: ParamType) => {
+export const NodeList = memo((params: ParamType) => {
 
     // デバッグの設定値
     const { setConfig, availableNodeInfo } = useContext(DebugContext);
@@ -31,7 +31,7 @@ export const NodeList = (params: ParamType) => {
             </option>
         );
     }
-    // setConfig(params.stateName, defaultValue);
+    setConfig(params.stateName, defaultValue);
 
     return (
         <select 
@@ -41,4 +41,4 @@ export const NodeList = (params: ParamType) => {
             ${locations}
         </select>
     )
-}
+});
