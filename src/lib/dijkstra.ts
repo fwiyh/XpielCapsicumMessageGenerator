@@ -1,7 +1,7 @@
 import * as data from "../data/positions.json";
-import { DNode } from "../entity/DNodeEntity";
-import { DEdge } from "../entity/DEdgeEntity";
-import { CalculatedNode } from "../entity/CalculatedNodeEntity";
+import { DNode } from "./entity/DNodeEntity";
+import { DEdge } from "./entity/DEdgeEntity";
+import { CalculatedNode } from "./entity/CalculatedNodeEntity";
 import lodash from "lodash";
 
 export class Dijkstra {
@@ -95,7 +95,6 @@ export class Dijkstra {
 
 	/**
 	 * 経路検索のロジック
-	 * http://nw.tsuda.ac.jp/lec/dijkstra/
 	 * 1. 各ノードのコストをinfinityにする
 	 * 2. 未確定経路の中から次のノードへのコストが最も小さい経路を洗濯
 	 * 3. ノードが過去のコストより小さい場合はコストを更新
