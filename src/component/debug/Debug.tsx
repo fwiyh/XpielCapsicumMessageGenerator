@@ -155,7 +155,13 @@ export const Debug = memo(() => {
                 </div>
             </div>
             <div>
-                <button type="button" onClick={() => console.log(debugContext)}>context</button>
+                <button 
+                    type="button" 
+                    className="btn btn-secondary" 
+                    onClick={() => console.log(debugContext)}
+                >
+                    context
+                </button>
             </div>
             <div className="row">
                 <div key={"debug_route_search_result"}>{debugRouteSearchResult}</div>
