@@ -1,12 +1,11 @@
 # XpirlCamsicumMessageGenerator
 巨大トウガラシ採取は３分半ぐらいしかポップしないため、最短経路で採取するための経路検索を行う。
 
-## 開発環境
+## 利用環境
 - TypeScript
 - WebPack
 - babel
-- jQuery
-  - 近い目標としてフロントエンドのフレームワークに完全移行
+- React（Hooks）
 
 ## ビルド方法
 1. nodejsのインストールでnpmをインストール
@@ -31,25 +30,28 @@ npm install
   + dist
   + public
   - src
+    + @types
+    + component
     + data
-    + entity
-    + libs
-    + ts
+    + function
+    + lib
     + types
 
 - public
   - 変更要素のないファイルの格納先
 - src
+  - @types
+    - jsonから各データにマッピングするための`d.ts`形式ファイル
+  - component
+    - Reachのソースとコンポーネント
   - data
     - 位置情報などのデータ
-  - entity
-    - オブジェクトなデータ型を
-  - libs
+  - function
+    - App.tsxで流用する関数
+  - lib
     - 共通的に使うライブラリ
-  - ts
-    - typescript本体
   - types
-    - jsonから各データにマッピングするための`d.ts`形式ファイル
+    - 型定義をtypesで宣言
 
 ## ライセンス
 MIT
