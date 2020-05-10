@@ -27,9 +27,9 @@ export const ConfigForm = memo((param: ConfigurationType) => {
     return (
         <div id="Config" className="row" style={{display: displayMode}}>
             <ConfigText
-                name="リージョン～ロケーション区切り文字"
-                id="regionLocation"
-                value={param.regionLocation}
+                name="チャンネル区切り文字"
+                id="channel"
+                value={param.channel}
             />
             <ConfigText
                 name="ロケーション区切り文字"
@@ -42,9 +42,9 @@ export const ConfigForm = memo((param: ConfigurationType) => {
                 value={param.locationChannel}
             />
             <ConfigText
-                name="チャンネル区切り文字"
-                id="channel"
-                value={param.channel}
+                name="リージョン～ロケーション区切り文字"
+                id="regionLocation"
+                value={param.regionLocation}
             />
             <ConfigText
                 name="リージョン間区切り文字"
