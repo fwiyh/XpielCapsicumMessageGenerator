@@ -36,9 +36,13 @@ const messageContext = {
     resultMessage: "" as string,
     // regionMessagesに値を設定する
     putLocation(regionIndex: number, channelIndex: number, location: LocationType) {
-        setLocation(messageContext.regionMessages, messageContext.positions, regionIndex, channelIndex, location);
-        const resultMesages = routeSearch(messageContext.regionMessages);
-        return buildMessage(resultMesages, messageContext, messageContext.positions);
+        setLocation(messageContext.regionMessages, regionIndex, channelIndex, location);
+    },
+    // message更新処理（config/messageが変更したときに呼ぶ）
+    changeMessaage(){
+        const resultRoute = routeSearch(messageContext.regionMessages);
+        const resultMessage = buildMessage(resultRoute, messageContext, messageContext.positions);
+        messageContext.setResultMessage(resultMessage);
     },
     // setState用の関数
     setResultMessage: {} as Dispatch<SetStateAction<string>>,

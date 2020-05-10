@@ -11,7 +11,6 @@ type ParamType = {
 export const Region = memo((params: ParamType) => {
 
     const { positions } = useContext(Context);
-console.log("Region " + params.index);
     const channelElemets: JSX.Element[] = [];
     // Region内チャンネルすべてにlocationを設定する
     for (let i = 0; i < positions.channels.length; i++){

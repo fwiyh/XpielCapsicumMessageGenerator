@@ -8,7 +8,6 @@ import { PositionType } from "../types/position/PositionType";
  */
 export const setLocation = (
     regionMessages: MessageRegionType[],
-    positions: PositionType,
     regionIndex: number,
     channelIndex: number,
     location: LocationType,
