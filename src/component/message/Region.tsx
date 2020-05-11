@@ -1,4 +1,4 @@
-import React, { useContext, memo } from "react";
+import React, { useContext } from "react";
 
 import { Channels } from "./Channels";
 import { Context } from "../App";
@@ -8,7 +8,7 @@ type ParamType = {
     index: number,
 }
 
-export const Region = memo((params: ParamType) => {
+export const Region = (params: ParamType) => {
 
     const { positions } = useContext(Context);
     const channelElemets: JSX.Element[] = [];
@@ -30,4 +30,4 @@ export const Region = memo((params: ParamType) => {
             {channelElemets}
         </>
     )
-});
+}
