@@ -20,7 +20,6 @@ let config = {
 		rules: [
 			{
 				test: /\.ts(x?)$/,
-				exclude: ["/node_modules/", "/src/scss/"],
 				use: [
 					{
 						loader: "babel-loader",
@@ -33,7 +32,6 @@ let config = {
 					},
 					{ loader: "ts-loader" },
 				],
-				// exclude: /node_modules|\.d\.ts$|\.config\.ts$/,
 				exclude: /node_modules|\.d\.ts$/,
 			},
 		]
